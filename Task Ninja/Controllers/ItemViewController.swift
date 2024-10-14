@@ -14,7 +14,6 @@ class ItemViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataManager.readDatabaseEntityItem()
-        tableView.reloadData()
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
@@ -24,24 +23,27 @@ class ItemViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        let newAlpha = dataManager.itemArray == nil ? CGFloat(0.0) : CGFloat(indexPath.row + 1) / CGFloat(dataManager.itemArray!.count)
-        cell.backgroundColor = UIColor(dataManager.categorySelected?.cellBackgroundColorHexString ?? "#00000000").withAlphaComponent(newAlpha)
-        cell.textLabel?.textColor = newAlpha <= 0.50 ? .black : .white
-        cell.textLabel?.text = dataManager.itemArray?[indexPath.row].name ?? "No items added yet."
-        cell.accessoryType = (dataManager.itemArray?[indexPath.row].isDone ?? false) ? .checkmark : .none
+        if let safeItemArray = dataManager.itemArray, let safeCategorySelected = dataManager.categorySelected {
+            let newAlpha = CGFloat(indexPath.row + 1) / CGFloat(dataManager.itemArray!.count)
+            cell.backgroundColor = UIColor(safeCategorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
+            cell.textLabel?.textColor = newAlpha <= 0.50 ? .black : .white
+            cell.textLabel?.text = safeItemArray[indexPath.row].name
+            cell.accessoryType = safeItemArray[indexPath.row].isDone ? .checkmark : .none
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataManager.itemArray?.count ?? 1
+        return dataManager.itemArray?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if dataManager.itemArray != nil {
             dataManager.updateDatabaseEntityItem(index: indexPath.row)
-            tableView.cellForRow(at: indexPath)?.accessoryType = dataManager.itemArray![indexPath.row].isDone ? .checkmark : .none
+            dataManager.readDatabaseEntityItem()
+            tableView.reloadData()
         }
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
@@ -77,14 +79,14 @@ extension ItemViewController {
 extension ItemViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.dataManager.readDatabaseEntityItem(searchBarText: searchBar.text ?? "")
+        dataManager.readDatabaseEntityItem(searchBarText: searchBar.text ?? "")
         tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
             self.dataManager.readDatabaseEntityItem(searchBarText: searchText)
-            tableView.reloadData()
+            self.tableView.reloadData()
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }

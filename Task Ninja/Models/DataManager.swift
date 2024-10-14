@@ -35,26 +35,27 @@ extension DataManager {
     
     func createDatabaseEntityCategory(name: String) {
         // Unique Name Constraint
+        let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
         if let safeCategoryArray = categoryArray {
             for category in safeCategoryArray {
-                if (category.name?.capitalized == name.capitalized) {
+                if (category.name?.capitalized == nameTransformed) {
                     return
                 }
             }
         }
         // Create New Category
         let newCategory = Category(context: self.context)
-        newCategory.name = name
+        newCategory.name = nameTransformed
         let newCellBackgroundColor = UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1.00)
         newCategory.cellBackgroundColorHexString = newCellBackgroundColor.hexString()
-        // Add To Category Array
+        // Save Changes
+        saveDatabase()
+        // Append New Category
         if categoryArray == nil {
             categoryArray = [newCategory]
         } else {
             categoryArray!.append(newCategory)
         }
-        // Save Changes
-        saveDatabase()
     }
     
     func readDatabaseEntityCategory() {
@@ -70,8 +71,8 @@ extension DataManager {
     
     func deleteDatabaseEntityCategory(index: Int) {
         context.delete(categoryArray![index])
-        categoryArray!.remove(at: index)
         saveDatabase()
+        categoryArray!.remove(at: index)
     }
     
 }
@@ -82,9 +83,10 @@ extension DataManager {
     
     func createDatabaseEntityItem(name: String) {
         // Unique Name Constraint
+        let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
         if let safeItemArray = itemArray {
             for item in safeItemArray {
-                if (item.name?.capitalized == name.capitalized) {
+                if (item.name?.capitalized == nameTransformed) {
                     return
                 }
             }
@@ -92,17 +94,17 @@ extension DataManager {
         // Create New Item
         let newItem = Item(context: self.context)
         newItem.categoryName = categorySelected!.name
-        newItem.name = name
+        newItem.name = nameTransformed
         newItem.isDone = false
         newItem.parentCategory = categorySelected!
-        // Add To Item Array
+        // Save Changes
+        saveDatabase()
+        // Append New Category
         if itemArray == nil {
             itemArray = [newItem]
         } else {
             itemArray!.append(newItem)
         }
-        // Save Changes
-        saveDatabase()
     }
     
     func readDatabaseEntityItem(searchBarText: String = "") {
@@ -124,8 +126,8 @@ extension DataManager {
     
     func deleteDatabaseEntityItem(index: Int) {
         context.delete(itemArray![index])
-        itemArray!.remove(at: index)
         saveDatabase()
+        itemArray!.remove(at: index)
     }
     
 }

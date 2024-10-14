@@ -14,7 +14,6 @@ class CategoryViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataManager.readDatabaseEntityCategory()
-        tableView.reloadData()
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
@@ -24,14 +23,16 @@ class CategoryViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.backgroundColor = UIColor(dataManager.categoryArray?[indexPath.row].cellBackgroundColorHexString ?? "#00000000")
-        cell.textLabel?.textColor = cell.backgroundColor?.hexString() == "#00000000" ? .black : .white
-        cell.textLabel?.text = dataManager.categoryArray?[indexPath.row].name ?? "No categories added yet."
+        if let safeCategoryArray = dataManager.categoryArray {
+            cell.backgroundColor = UIColor(safeCategoryArray[indexPath.row].cellBackgroundColorHexString!)
+            cell.textLabel?.textColor = .white
+            cell.textLabel?.text = safeCategoryArray[indexPath.row].name
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataManager.categoryArray?.count ?? 1
+        return dataManager.categoryArray?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
