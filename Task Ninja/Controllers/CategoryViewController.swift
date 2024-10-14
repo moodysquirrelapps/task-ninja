@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoryViewController: SwipeTableViewController {
+class CategoryViewController: BaseTableViewController {
     
     let dataManager: DataManager = DataManager()
     
@@ -25,7 +25,7 @@ class CategoryViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let safeCategoryArray = dataManager.categoryArray {
             cell.backgroundColor = UIColor(safeCategoryArray[indexPath.row].cellBackgroundColorHexString!)
-            cell.textLabel?.textColor = .white
+            cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeCategoryArray[indexPath.row].name
         }
         return cell

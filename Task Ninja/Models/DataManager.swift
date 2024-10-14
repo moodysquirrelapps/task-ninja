@@ -29,7 +29,7 @@ class DataManager {
     
 }
     
-    // MARK: - Category CRUD Methods
+// MARK: - Category CRUD Methods
 
 extension DataManager {
     
@@ -77,7 +77,7 @@ extension DataManager {
     
 }
 
-    // MARK: - Item CRUD Methods
+// MARK: - Item CRUD Methods
 
 extension DataManager {
     

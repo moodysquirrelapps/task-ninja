@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemViewController: SwipeTableViewController {
+class ItemViewController: BaseTableViewController {
     
     let dataManager: DataManager = DataManager()
     
@@ -24,9 +24,10 @@ class ItemViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let safeItemArray = dataManager.itemArray, let safeCategorySelected = dataManager.categorySelected {
-            let newAlpha = CGFloat(indexPath.row + 1) / CGFloat(dataManager.itemArray!.count)
+            let categorySelectedBackgroundColor = UIColor(safeCategorySelected.cellBackgroundColorHexString!)
+            let newAlpha = 0.50 + CGFloat(indexPath.row + 1) * (1.00 - 0.50) / CGFloat(dataManager.itemArray!.count)
             cell.backgroundColor = UIColor(safeCategorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
-            cell.textLabel?.textColor = newAlpha <= 0.50 ? .black : .white
+            cell.textLabel?.textColor = categorySelectedBackgroundColor.isLight ? .black : .white
             cell.textLabel?.text = safeItemArray[indexPath.row].name
             cell.accessoryType = safeItemArray[indexPath.row].isDone ? .checkmark : .none
         }

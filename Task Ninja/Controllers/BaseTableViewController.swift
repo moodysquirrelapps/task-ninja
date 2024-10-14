@@ -8,7 +8,7 @@
 import UIKit
 import SwipeCellKit
 
-class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
+class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +41,18 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 
     func deleteDatabaseEntity(indexPath: IndexPath) {
         // Implementation Provided By Children
+    }
+    
+}
+
+//MARK: - UIColor
+
+extension UIColor {
+    
+    var isLight: Bool {
+        var white: CGFloat = 0
+        getWhite(&white, alpha: nil)
+        return white > 0.5
     }
     
 }
