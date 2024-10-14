@@ -18,7 +18,6 @@ class CategoryViewController: BaseTableViewController {
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityCategory(index: indexPath.row)
-        dataManager.readDatabaseEntityCategory()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -64,7 +63,6 @@ extension CategoryViewController {
             if let safeText = inputTextField.text {
                 if safeText != "" {
                     self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized)
-                    self.dataManager.readDatabaseEntityCategory()
                     self.tableView.reloadData()
                 }
             }

@@ -50,12 +50,8 @@ extension DataManager {
         newCategory.cellBackgroundColorHexString = newCellBackgroundColor.hexString()
         // Save Changes
         saveDatabase()
-        // Append New Category
-        if categoryArray == nil {
-            categoryArray = [newCategory]
-        } else {
-            categoryArray!.append(newCategory)
-        }
+        // Refresh Category Array
+        readDatabaseEntityCategory()
     }
     
     func readDatabaseEntityCategory() {
@@ -72,7 +68,7 @@ extension DataManager {
     func deleteDatabaseEntityCategory(index: Int) {
         context.delete(categoryArray![index])
         saveDatabase()
-        categoryArray!.remove(at: index)
+        readDatabaseEntityCategory()
     }
     
 }
@@ -99,12 +95,8 @@ extension DataManager {
         newItem.parentCategory = categorySelected!
         // Save Changes
         saveDatabase()
-        // Append New Category
-        if itemArray == nil {
-            itemArray = [newItem]
-        } else {
-            itemArray!.append(newItem)
-        }
+        // Refresh Item Array
+        readDatabaseEntityItem()
     }
     
     func readDatabaseEntityItem(searchBarText: String = "") {
@@ -122,12 +114,13 @@ extension DataManager {
     func updateDatabaseEntityItem(index: Int) {
         itemArray![index].isDone = !(itemArray![index].isDone)
         saveDatabase()
+        readDatabaseEntityItem()
     }
     
     func deleteDatabaseEntityItem(index: Int) {
         context.delete(itemArray![index])
         saveDatabase()
-        itemArray!.remove(at: index)
+        readDatabaseEntityItem()
     }
     
 }

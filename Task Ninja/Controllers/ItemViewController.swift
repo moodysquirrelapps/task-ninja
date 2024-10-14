@@ -18,16 +18,14 @@ class ItemViewController: BaseTableViewController {
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityItem(index: indexPath.row)
-        dataManager.readDatabaseEntityItem()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        if let safeItemArray = dataManager.itemArray, let safeCategorySelected = dataManager.categorySelected {
-            let categorySelectedBackgroundColor = UIColor(safeCategorySelected.cellBackgroundColorHexString!)
-            let newAlpha = 0.50 + CGFloat(indexPath.row + 1) * (1.00 - 0.50) / CGFloat(dataManager.itemArray!.count)
-            cell.backgroundColor = UIColor(safeCategorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
-            cell.textLabel?.textColor = categorySelectedBackgroundColor.isLight ? .black : .white
+        if let safeItemArray = dataManager.itemArray, let categorySelected = dataManager.categorySelected {
+            let newAlpha = CGFloat(0.50 +  Float(indexPath.row + 1) * (1.00 - 0.50) / Float(safeItemArray.count))
+            cell.backgroundColor = UIColor(categorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
+            cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeItemArray[indexPath.row].name
             cell.accessoryType = safeItemArray[indexPath.row].isDone ? .checkmark : .none
         }
@@ -42,7 +40,6 @@ class ItemViewController: BaseTableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         if dataManager.itemArray != nil {
             dataManager.updateDatabaseEntityItem(index: indexPath.row)
-            dataManager.readDatabaseEntityItem()
             tableView.reloadData()
         }
     }
@@ -60,7 +57,6 @@ extension ItemViewController {
             if let safeText = inputTextField.text {
                 if safeText != "" {
                     self.dataManager.createDatabaseEntityItem(name: safeText.capitalized)
-                    self.dataManager.readDatabaseEntityItem()
                     self.tableView.reloadData()
                 }
             }
