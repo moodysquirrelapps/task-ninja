@@ -16,6 +16,12 @@ class CategoryViewController: BaseTableViewController {
         dataManager.readDatabaseEntityCategory()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
+        navBar.backgroundColor = .systemBlue
+        navBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+    }
+    
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityCategory(index: indexPath.row)
     }

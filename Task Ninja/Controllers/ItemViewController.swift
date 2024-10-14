@@ -10,10 +10,24 @@ import UIKit
 class ItemViewController: BaseTableViewController {
     
     let dataManager: DataManager = DataManager()
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         dataManager.readDatabaseEntityItem()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = dataManager.categorySelected!.name
+        guard let navBar = navigationController?.navigationBar else { fatalError("itemVC error: Navigation Bar is nil.") }
+        let backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
+        navBar.backgroundColor = backgroundColor
+        let tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
+        navBar.tintColor = tintColor
+        navBar.largeTitleTextAttributes = [.foregroundColor: tintColor]
+        navigationItem.rightBarButtonItem?.tintColor = tintColor
+        searchBar.barTintColor = backgroundColor
+        searchBar.searchTextField.backgroundColor = .white
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
