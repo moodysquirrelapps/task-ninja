@@ -22,9 +22,19 @@ class ItemViewController: BaseTableViewController {
         guard let navBar = navigationController?.navigationBar else { fatalError("itemVC error: Navigation Bar is nil.") }
         let backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
         navBar.backgroundColor = backgroundColor
+        navBar.standardAppearance.backgroundColor = backgroundColor
+        navBar.compactAppearance?.backgroundColor = backgroundColor
+        navBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
         let tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
-        navBar.tintColor = tintColor
+        navBar.titleTextAttributes = [.foregroundColor: tintColor]
+        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: tintColor]
+        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: tintColor]
+        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: tintColor]
         navBar.largeTitleTextAttributes = [.foregroundColor: tintColor]
+        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: tintColor]
+        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor]
+        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor]
+        navBar.tintColor = tintColor
         navigationItem.rightBarButtonItem?.tintColor = tintColor
         searchBar.barTintColor = backgroundColor
         searchBar.searchTextField.backgroundColor = .white
@@ -67,7 +77,7 @@ extension ItemViewController {
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         var inputTextField = UITextField()
         let alert = UIAlertController(title: "Add New Item:", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+        let addAction = UIAlertAction(title: "Add Item", style: .default) { action in
             if let safeText = inputTextField.text {
                 if safeText != "" {
                     self.dataManager.createDatabaseEntityItem(name: safeText.capitalized)
@@ -75,7 +85,9 @@ extension ItemViewController {
                 }
             }
         }
-        alert.addAction(action)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
+        alert.addAction(addAction)
+        alert.addAction(cancelAction)
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Create New Item"
             inputTextField = alertTextField

@@ -19,7 +19,19 @@ class CategoryViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
         navBar.backgroundColor = .systemBlue
+        navBar.standardAppearance.backgroundColor = .systemBlue
+        navBar.compactAppearance?.backgroundColor = .systemBlue
+        navBar.scrollEdgeAppearance?.backgroundColor = .systemBlue
+        navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.tintColor = .white
+        navigationItem.rightBarButtonItem?.tintColor = .white
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
