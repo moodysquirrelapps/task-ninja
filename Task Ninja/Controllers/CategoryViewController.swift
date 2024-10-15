@@ -14,6 +14,7 @@ class CategoryViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataManager.readDatabaseEntityCategory()
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +78,7 @@ extension CategoryViewController {
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         var inputTextField = UITextField()
         let alert = UIAlertController(title: "Add New Category:", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add Category", style: .default) { action in
+        let addAction = UIAlertAction(title: "Add Category", style: .default) { action in
             if let safeText = inputTextField.text {
                 if safeText != "" {
                     self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized)
@@ -85,7 +86,9 @@ extension CategoryViewController {
                 }
             }
         }
-        alert.addAction(action)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
+        alert.addAction(addAction)
+        alert.addAction(cancelAction)
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Create New Category"
             inputTextField = alertTextField

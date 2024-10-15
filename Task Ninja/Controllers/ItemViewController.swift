@@ -15,6 +15,7 @@ class ItemViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataManager.readDatabaseEntityItem()
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
