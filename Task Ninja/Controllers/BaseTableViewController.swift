@@ -9,6 +9,12 @@ import UIKit
 import SwipeCellKit
 
 class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate {
+    
+    let smallFont: UIFont = UIFont(name: "ZenDots-Regular", size: 14.0)!
+    let regularFont: UIFont = UIFont(name: "ZenDots-Regular", size: 22.0)!
+    let titleFont: UIFont = UIFont(name: "ZenDots-Regular", size: 40.0)!
+    var backgroundColor: UIColor = UIColor.systemBlue
+    var tintColor: UIColor = UIColor.white
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,20 +25,20 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
     override func viewWillAppear(_ animated: Bool) {
         navigationItem.title = "Task Ninja"
         guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
-        navBar.backgroundColor = .systemBlue
-        navBar.standardAppearance.backgroundColor = .systemBlue
-        navBar.compactAppearance?.backgroundColor = .systemBlue
-        navBar.scrollEdgeAppearance?.backgroundColor = .systemBlue
-        navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.tintColor = .white
-        navigationItem.rightBarButtonItem?.tintColor = .white
+        navBar.backgroundColor = backgroundColor
+        navBar.standardAppearance.backgroundColor = backgroundColor
+        navBar.compactAppearance?.backgroundColor = backgroundColor
+        navBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
+        navBar.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
+        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
+        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
+        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
+        navBar.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
+        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
+        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
+        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
+        navBar.tintColor = tintColor
+        navigationItem.rightBarButtonItem?.tintColor = tintColor
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
@@ -55,6 +61,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
         cell.delegate = self
         cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.font = regularFont
         return cell
     }
     

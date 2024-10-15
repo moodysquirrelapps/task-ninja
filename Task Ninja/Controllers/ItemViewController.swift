@@ -14,29 +14,16 @@ class ItemViewController: BaseTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
+        tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
         dataManager.readDatabaseEntityItem()
         tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         navigationItem.title = dataManager.categorySelected!.name
-        guard let navBar = navigationController?.navigationBar else { fatalError("itemVC error: Navigation Bar is nil.") }
-        let backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
-        navBar.backgroundColor = backgroundColor
-        navBar.standardAppearance.backgroundColor = backgroundColor
-        navBar.compactAppearance?.backgroundColor = backgroundColor
-        navBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
-        let tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
-        navBar.titleTextAttributes = [.foregroundColor: tintColor]
-        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: tintColor]
-        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: tintColor]
-        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: tintColor]
-        navBar.largeTitleTextAttributes = [.foregroundColor: tintColor]
-        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: tintColor]
-        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor]
-        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor]
-        navBar.tintColor = tintColor
-        navigationItem.rightBarButtonItem?.tintColor = tintColor
+        searchBar.searchTextField.font = smallFont
         searchBar.barTintColor = backgroundColor
         searchBar.searchTextField.backgroundColor = .white
     }
@@ -53,6 +40,7 @@ class ItemViewController: BaseTableViewController {
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeItemArray[indexPath.row].name
             cell.accessoryType = safeItemArray[indexPath.row].isDone ? .checkmark : .none
+            cell.tintColor = cell.backgroundColor!.isLight ? .black : .white
         }
         return cell
     }

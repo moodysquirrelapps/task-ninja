@@ -21,6 +21,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E61808452CBE04BE0008E8D3 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		E658863F2CB98A2B001699EB /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 		E65886412CB98A39001699EB /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
 		E65886422CB98A52001699EB /* Controllers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Controllers; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 				E65886412CB98A39001699EB /* Views */,
 				EB2BE502239524DC00FB933B /* Assets.xcassets */,
 				EB2BE507239524DC00FB933B /* Info.plist */,
+				E61808452CBE04BE0008E8D3 /* Fonts */,
 			);
 			path = "Task Ninja";
 			sourceTree = "<group>";
@@ -84,6 +86,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				E61808452CBE04BE0008E8D3 /* Fonts */,
 				E658863F2CB98A2B001699EB /* Models */,
 				E65886412CB98A39001699EB /* Views */,
 				E65886422CB98A52001699EB /* Controllers */,
