@@ -16,6 +16,25 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         tableView.separatorStyle = .none
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = "Task Ninja"
+        guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
+        navBar.backgroundColor = .systemBlue
+        navBar.standardAppearance.backgroundColor = .systemBlue
+        navBar.compactAppearance?.backgroundColor = .systemBlue
+        navBar.scrollEdgeAppearance?.backgroundColor = .systemBlue
+        navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.tintColor = .white
+        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
+    
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = .destructive
@@ -37,6 +56,13 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         cell.delegate = self
         cell.textLabel?.numberOfLines = 0
         return cell
+    }
+    
+    func invalidResponseAddPressed(message: String) {
+        let alert = UIAlertController(title: "Error:", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default) { action in return }
+        alert.addAction(okAction)
+        present(alert, animated: true) { }
     }
 
     func deleteDatabaseEntity(indexPath: IndexPath) {

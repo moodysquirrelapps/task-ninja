@@ -62,11 +62,11 @@ class ItemViewController: BaseTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         if dataManager.itemArray != nil {
             dataManager.updateDatabaseEntityItem(index: indexPath.row)
             tableView.reloadData()
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
@@ -79,11 +79,11 @@ extension ItemViewController {
         var inputTextField = UITextField()
         let alert = UIAlertController(title: "Add New Item:", message: "", preferredStyle: .alert)
         let addAction = UIAlertAction(title: "Add Item", style: .default) { action in
-            if let safeText = inputTextField.text {
-                if safeText != "" {
-                    self.dataManager.createDatabaseEntityItem(name: safeText.capitalized)
-                    self.tableView.reloadData()
-                }
+            guard let safeText = inputTextField.text else { return }
+            if safeText != "" {
+                self.dataManager.createDatabaseEntityItem(name: safeText.capitalized) ? self.tableView.reloadData() : self.invalidResponseAddPressed(message: "Item already exists.")
+            } else {
+                self.invalidResponseAddPressed(message: "Response is empty.")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }

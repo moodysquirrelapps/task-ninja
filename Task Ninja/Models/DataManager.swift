@@ -28,19 +28,17 @@ class DataManager {
     }
     
 }
-    
+
 // MARK: - Category CRUD Methods
 
 extension DataManager {
     
-    func createDatabaseEntityCategory(name: String) {
+    func createDatabaseEntityCategory(name: String) -> Bool {
         // Unique Name Constraint
         let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
         if let safeCategoryArray = categoryArray {
             for category in safeCategoryArray {
-                if (category.name?.capitalized == nameTransformed) {
-                    return
-                }
+                if (category.name!.capitalized == nameTransformed) { return false }
             }
         }
         // Create New Category
@@ -52,6 +50,7 @@ extension DataManager {
         saveDatabase()
         // Refresh Category Array
         readDatabaseEntityCategory()
+        return true
     }
     
     func readDatabaseEntityCategory() {
@@ -77,14 +76,12 @@ extension DataManager {
 
 extension DataManager {
     
-    func createDatabaseEntityItem(name: String) {
+    func createDatabaseEntityItem(name: String) -> Bool {
         // Unique Name Constraint
         let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
         if let safeItemArray = itemArray {
             for item in safeItemArray {
-                if (item.name?.capitalized == nameTransformed) {
-                    return
-                }
+                if (item.name!.capitalized == nameTransformed) { return false }
             }
         }
         // Create New Item
@@ -97,6 +94,7 @@ extension DataManager {
         saveDatabase()
         // Refresh Item Array
         readDatabaseEntityItem()
+        return true
     }
     
     func readDatabaseEntityItem(searchBarText: String = "") {

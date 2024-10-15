@@ -17,24 +17,6 @@ class CategoryViewController: BaseTableViewController {
         tableView.reloadData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
-        navBar.backgroundColor = .systemBlue
-        navBar.standardAppearance.backgroundColor = .systemBlue
-        navBar.compactAppearance?.backgroundColor = .systemBlue
-        navBar.scrollEdgeAppearance?.backgroundColor = .systemBlue
-        navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBar.tintColor = .white
-        navigationItem.rightBarButtonItem?.tintColor = .white
-    }
-    
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityCategory(index: indexPath.row)
     }
@@ -54,18 +36,14 @@ class CategoryViewController: BaseTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if dataManager.categoryArray != nil {
-            performSegue(withIdentifier: "segueCategoryToItem", sender: self)
-        }
+        performSegue(withIdentifier: "segueCategoryToItem", sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueCategoryToItem" {
             let destinationViewController = segue.destination as! ItemViewController
-            if let indexPathSelected = tableView.indexPathForSelectedRow {
-                destinationViewController.dataManager.categorySelected = dataManager.categoryArray![indexPathSelected.row]
-            }
+            destinationViewController.dataManager.categorySelected = dataManager.categoryArray![tableView.indexPathForSelectedRow!.row]
         }
     }
     
@@ -79,11 +57,11 @@ extension CategoryViewController {
         var inputTextField = UITextField()
         let alert = UIAlertController(title: "Add New Category:", message: "", preferredStyle: .alert)
         let addAction = UIAlertAction(title: "Add Category", style: .default) { action in
-            if let safeText = inputTextField.text {
-                if safeText != "" {
-                    self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized)
-                    self.tableView.reloadData()
-                }
+            guard let safeText = inputTextField.text else { return }
+            if safeText != "" {
+                self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized) ? self.tableView.reloadData() : self.invalidResponseAddPressed(message: "Category already exists.")
+            } else {
+                self.invalidResponseAddPressed(message: "Response is empty.")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
