@@ -17,6 +17,10 @@ class CategoryViewController: BaseTableViewController {
         tableView.reloadData()
     }
     
+    override func updateDatabaseEntity(indexPath: IndexPath) {
+        editDatabaseEntityCategory(index: indexPath.row)
+    }
+    
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityCategory(index: indexPath.row)
     }
@@ -69,6 +73,28 @@ extension CategoryViewController {
         alert.addAction(cancelAction)
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Create New Category"
+            inputTextField = alertTextField
+        }
+        present(alert, animated: true) { }
+    }
+    
+    func editDatabaseEntityCategory(index: Int) {
+        var inputTextField = UITextField()
+        let alert = UIAlertController(title: "Edit Current Category:", message: "", preferredStyle: .alert)
+        let editAction = UIAlertAction(title: "Edit Category", style: .default) { action in
+            guard let safeText = inputTextField.text else { return }
+            if safeText != "" {
+                self.dataManager.updateDatabaseEntityCategory(index: index, newName: safeText) ? self.tableView.reloadData() : self.invalidResponseAddPressed(message: "Category already exists.")
+            } else {
+                self.invalidResponseAddPressed(message: "Response is empty.")
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
+        alert.addAction(editAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "Edit Current Category"
+            alertTextField.text = self.dataManager.categoryArray![index].name
             inputTextField = alertTextField
         }
         present(alert, animated: true) { }

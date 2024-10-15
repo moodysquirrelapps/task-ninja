@@ -50,11 +50,17 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeCellKit.SwipeActionsOrientation) -> [SwipeCellKit.SwipeAction]? {
         guard orientation == .right else { return nil }
+        let editAction = SwipeAction(style: .default, title: nil) { action, indexPath in
+            self.updateDatabaseEntity(indexPath: indexPath)
+        }
         let deleteAction = SwipeAction(style: .destructive, title: nil) { action, indexPath in
             self.deleteDatabaseEntity(indexPath: indexPath)
         }
-        deleteAction.image = UIImage(systemName: "trash.fill")
-        return [deleteAction]
+        editAction.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))
+        editAction.backgroundColor = UIColor.systemYellow
+        deleteAction.image = UIImage(systemName: "trash.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))
+        deleteAction.backgroundColor = UIColor.systemRed
+        return [deleteAction, editAction]
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,6 +78,10 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         present(alert, animated: true) { }
     }
 
+    func updateDatabaseEntity(indexPath: IndexPath) {
+        // Implementation Provided By Children
+    }
+    
     func deleteDatabaseEntity(indexPath: IndexPath) {
         // Implementation Provided By Children
     }

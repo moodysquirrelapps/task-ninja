@@ -28,6 +28,10 @@ class ItemViewController: BaseTableViewController {
         searchBar.searchTextField.backgroundColor = .white
     }
     
+    override func updateDatabaseEntity(indexPath: IndexPath) {
+        editDatabaseEntityItem(index: indexPath.row)
+    }
+    
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityItem(index: indexPath.row)
     }
@@ -39,7 +43,7 @@ class ItemViewController: BaseTableViewController {
             cell.backgroundColor = UIColor(categorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeItemArray[indexPath.row].name
-            cell.accessoryType = safeItemArray[indexPath.row].isDone ? .checkmark : .none
+            cell.accessoryView = safeItemArray[indexPath.row].isDone ? UIImageView(image: UIImage(systemName: "checkmark.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))) : nil
             cell.tintColor = cell.backgroundColor!.isLight ? .black : .white
         }
         return cell
@@ -51,7 +55,7 @@ class ItemViewController: BaseTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dataManager.itemArray != nil {
-            dataManager.updateDatabaseEntityItem(index: indexPath.row)
+            _ = dataManager.updateDatabaseEntityItem(index: indexPath.row)
             tableView.reloadData()
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -79,6 +83,28 @@ extension ItemViewController {
         alert.addAction(cancelAction)
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Create New Item"
+            inputTextField = alertTextField
+        }
+        present(alert, animated: true) { }
+    }
+    
+    func editDatabaseEntityItem(index: Int) {
+        var inputTextField = UITextField()
+        let alert = UIAlertController(title: "Edit Current Item:", message: "", preferredStyle: .alert)
+        let editAction = UIAlertAction(title: "Edit Item", style: .default) { action in
+            guard let safeText = inputTextField.text else { return }
+            if safeText != "" {
+                self.dataManager.updateDatabaseEntityItem(index: index, newName: safeText) ? self.tableView.reloadData() : self.invalidResponseAddPressed(message: "Item already exists.")
+            } else {
+                self.invalidResponseAddPressed(message: "Response is empty.")
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
+        alert.addAction(editAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "Edit Current Item"
+            alertTextField.text = self.dataManager.itemArray![index].name
             inputTextField = alertTextField
         }
         present(alert, animated: true) { }

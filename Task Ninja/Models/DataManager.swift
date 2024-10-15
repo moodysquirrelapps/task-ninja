@@ -64,6 +64,23 @@ extension DataManager {
         }
     }
     
+    func updateDatabaseEntityCategory(index: Int, newName: String) -> Bool {
+        // Unique Name Constraint
+        let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
+        if let safeCategoryArray = categoryArray {
+            for category in safeCategoryArray {
+                if (category.name!.capitalized == nameTransformed) { return false }
+            }
+        }
+        // Edit Current Category
+        categoryArray![index].name = nameTransformed
+        // Save Changes
+        saveDatabase()
+        // Refresh Category Array
+        readDatabaseEntityCategory()
+        return true
+    }
+    
     func deleteDatabaseEntityCategory(index: Int) {
         context.delete(categoryArray![index])
         saveDatabase()
@@ -109,10 +126,27 @@ extension DataManager {
         }
     }
     
-    func updateDatabaseEntityItem(index: Int) {
-        itemArray![index].isDone = !(itemArray![index].isDone)
-        saveDatabase()
-        readDatabaseEntityItem()
+    func updateDatabaseEntityItem(index: Int, newName: String = "") -> Bool {
+        if newName == "" {
+            itemArray![index].isDone = !(itemArray![index].isDone)
+            saveDatabase()
+            readDatabaseEntityItem()
+        } else {
+            // Unique Name Constraint
+            let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
+            if let safeItemArray = itemArray {
+                for item in safeItemArray {
+                    if (item.name!.capitalized == nameTransformed) { return false }
+                }
+            }
+            // Edit Current Item
+            itemArray![index].name = nameTransformed
+            // Save Changes
+            saveDatabase()
+            // Refresh Item Array
+            readDatabaseEntityItem()
+        }
+        return true
     }
     
     func deleteDatabaseEntityItem(index: Int) {
