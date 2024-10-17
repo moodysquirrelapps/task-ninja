@@ -124,7 +124,7 @@ extension DataManager {
     func readDatabaseEntityItem(searchBarText: String = "") {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         request.predicate = (searchBarText == "") ? NSPredicate(format: "categoryName MATCHES %@", categorySelected!.name!) : NSPredicate(format: "categoryName MATCHES %@ AND name CONTAINS[cd] %@", categorySelected!.name!, searchBarText)
-        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
         do {
             let fetchedItem = try context.fetch(request)
             itemArray = fetchedItem.count == 0 ? nil : fetchedItem
