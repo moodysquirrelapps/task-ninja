@@ -50,7 +50,9 @@ class ItemViewController: BaseTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataManager.itemArray?.count ?? 0
+        let itemArrayCount = dataManager.itemArray?.count ?? 0
+        (itemArrayCount == 0) ? setEmptyMessage(message: "No items added yet.") : restore()
+        return itemArrayCount
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

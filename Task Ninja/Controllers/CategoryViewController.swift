@@ -36,7 +36,9 @@ class CategoryViewController: BaseTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataManager.categoryArray?.count ?? 0
+        let categoryArrayCount = dataManager.categoryArray?.count ?? 0
+        (categoryArrayCount == 0) ? setEmptyMessage(message: "No categories added yet.") : restore()
+        return categoryArrayCount
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

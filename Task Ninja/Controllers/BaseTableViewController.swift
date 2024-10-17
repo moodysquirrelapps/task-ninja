@@ -20,9 +20,11 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         super.viewDidLoad()
         tableView.rowHeight = 80.0
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Navigation Bar
         navigationItem.title = "Task Ninja"
         guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
         navBar.backgroundColor = backgroundColor
@@ -39,8 +41,23 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
         navBar.tintColor = tintColor
         navigationItem.rightBarButtonItem?.tintColor = tintColor
+        // Upper Safe Area
+        var frame = tableView.bounds
+        frame.origin.y = -frame.size.height
+        let safeAreaView = UIView(frame: frame)
+        safeAreaView.backgroundColor = backgroundColor
+        tableView.addSubview(safeAreaView)
     }
     
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
+        cell.delegate = self
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.font = regularFont
+        return cell
+    }
+    
+    // SwipeTableView Methods
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = .destructive
@@ -63,27 +80,35 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         return [deleteAction, editAction]
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
-        cell.delegate = self
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.font = regularFont
-        return cell
-    }
-    
-    func invalidResponseAddPressed(message: String) {
-        let alert = UIAlertController(title: "Error:", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .default) { action in return }
-        alert.addAction(okAction)
-        present(alert, animated: true) { }
-    }
-
     func updateDatabaseEntity(indexPath: IndexPath) {
         // Implementation Provided By Children
     }
     
     func deleteDatabaseEntity(indexPath: IndexPath) {
         // Implementation Provided By Children
+    }
+    
+    // UI Helper Methods
+    func invalidResponseAddPressed(message: String) {
+        let alert = UIAlertController(title: "Error:", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default) { action in return }
+        alert.addAction(okAction)
+        present(alert, animated: true) { }
+    }
+    
+    func setEmptyMessage(message: String) {
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.textColor = .black
+        messageLabel.font = regularFont
+        messageLabel.text = message
+        messageLabel.sizeToFit()
+        tableView.backgroundView = messageLabel
+    }
+
+    func restore() {
+        tableView.backgroundView = nil
     }
     
 }
