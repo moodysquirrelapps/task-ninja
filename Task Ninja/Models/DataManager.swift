@@ -27,6 +27,12 @@ class DataManager {
         }
     }
     
+    func dateToString(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date)
+    }
+    
 }
 
 // MARK: - Category CRUD Methods
@@ -106,6 +112,7 @@ extension DataManager {
         newItem.categoryName = categorySelected!.name
         newItem.name = nameTransformed
         newItem.isDone = false
+        newItem.date = Date()
         newItem.parentCategory = categorySelected!
         // Save Changes
         saveDatabase()

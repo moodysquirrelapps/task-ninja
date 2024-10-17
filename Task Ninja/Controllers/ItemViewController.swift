@@ -43,7 +43,9 @@ class ItemViewController: BaseTableViewController {
             cell.backgroundColor = UIColor(categorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeItemArray[indexPath.row].name
-            cell.accessoryView = safeItemArray[indexPath.row].isDone ? UIImageView(image: UIImage(systemName: "checkmark.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))) : nil
+            cell.detailTextLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
+            cell.detailTextLabel?.text = dataManager.dateToString(date: safeItemArray[indexPath.row].date!)
+            cell.accessoryView = safeItemArray[indexPath.row].isDone ? UIImageView(image: UIImage(systemName: "checkmark.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))) : UIImageView(image: UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0)))
             cell.tintColor = cell.backgroundColor!.isLight ? .black : .white
         }
         return cell

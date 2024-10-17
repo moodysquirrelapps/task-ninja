@@ -11,7 +11,7 @@ import SwipeCellKit
 class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate {
     
     let smallFont: UIFont = UIFont(name: "ZenDots-Regular", size: 14.0)!
-    let regularFont: UIFont = UIFont(name: "ZenDots-Regular", size: 22.0)!
+    let regularFont: UIFont = UIFont(name: "ZenDots-Regular", size: 24.0)!
     let titleFont: UIFont = UIFont(name: "ZenDots-Regular", size: 40.0)!
     var backgroundColor: UIColor = UIColor.systemBlue
     var tintColor: UIColor = UIColor.white
@@ -54,6 +54,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         cell.delegate = self
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = regularFont
+        cell.detailTextLabel?.font = smallFont
         return cell
     }
     

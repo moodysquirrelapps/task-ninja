@@ -31,6 +31,9 @@ class CategoryViewController: BaseTableViewController {
             cell.backgroundColor = UIColor(safeCategoryArray[indexPath.row].cellBackgroundColorHexString!)
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeCategoryArray[indexPath.row].name
+            cell.detailTextLabel?.text = nil
+            cell.accessoryView = UIImageView(image: UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0)))
+            cell.tintColor = cell.backgroundColor!.isLight ? .black : .white
         }
         return cell
     }
