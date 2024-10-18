@@ -42,7 +42,7 @@ class CategoryViewController: BaseTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let categoryArrayCount = dataManager.categoryArray?.count ?? 0
-        (categoryArrayCount == 0) ? setEmptyMessage(message: "No categories found.") : restore()
+        (categoryArrayCount == 0) ? setEmptyMessage(message: "No categories added.") : restore()
         return categoryArrayCount
     }
     
@@ -53,7 +53,7 @@ class CategoryViewController: BaseTableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueCategoryToItem" {
-            let destinationViewController = segue.destination as! ItemViewController
+            let destinationViewController = segue.destination as! TaskViewController
             destinationViewController.dataManager.categorySelected = dataManager.categoryArray![tableView.indexPathForSelectedRow!.row]
         }
     }
@@ -83,6 +83,7 @@ extension CategoryViewController {
         alert.addAction(cancelAction)
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Create New Category"
+            alertTextField.returnKeyType = .done
             inputTextField = alertTextField
         }
         present(alert, animated: true) { }
@@ -108,6 +109,7 @@ extension CategoryViewController {
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Edit Current Category"
             alertTextField.text = self.dataManager.categoryArray![index].name
+            alertTextField.returnKeyType = .done
             inputTextField = alertTextField
         }
         present(alert, animated: true) { }

@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rI9-l9-yhF">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -66,7 +65,7 @@
         <!--Items-->
         <scene sceneID="yK0-Wd-ufq">
             <objects>
-                <tableViewController id="Fts-Jm-XHa" customClass="ItemViewController" customModule="Task_Ninja" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Fts-Jm-XHa" customClass="TaskViewController" customModule="Task_Ninja" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="9C1-fU-aeJ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -79,7 +78,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                                     <subviews>
                                         <searchBar contentMode="redraw" placeholder="Search..." translatesAutoresizingMaskIntoConstraints="NO" id="FzR-nT-qUo">
-                                            <rect key="frame" x="0.0" y="0.0" width="197" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="196.66666666666666" height="44"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
                                                 <outlet property="delegate" destination="Fts-Jm-XHa" id="rtu-kx-7mv"/>

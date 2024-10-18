@@ -13,7 +13,7 @@ class DataManager {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var categoryArray: [Category]?
-    var itemArray: [Item]?
+    var taskArray: [Task]?
     var categorySelected: Category?
     
     func saveDatabase() {
@@ -91,27 +91,27 @@ extension DataManager {
     
 }
 
-// MARK: - Item CRUD Methods
+// MARK: - Task CRUD Methods
 
 extension DataManager {
     
-    func createDatabaseEntityItem(name: String) -> Bool {
-        // Create New Item
+    func createDatabaseEntityTask(name: String) -> Bool {
+        // Create New Task
         let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
-        let newItem = Item(context: self.context)
-        newItem.categoryName = categorySelected!.name
-        newItem.name = nameTransformed
-        newItem.isDone = false
-        newItem.creationDate = Date()
-        newItem.completionDate = nil
-        newItem.parentCategory = categorySelected!
+        let newTask = Task(context: self.context)
+        newTask.categoryName = categorySelected!.name
+        newTask.name = nameTransformed
+        newTask.isDone = false
+        newTask.creationDate = Date()
+        newTask.completionDate = nil
+        newTask.parentCategory = categorySelected!
         // Save Changes
         saveDatabase()
         return true
     }
     
-    func readDatabaseEntityItem(withSearch searchBarText: String = "", withControl segmentedControlValue: String = "Active") {
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+    func readDatabaseEntityTask(withSearch searchBarText: String = "", withControl segmentedControlValue: String = "Active") {
+        let request: NSFetchRequest<Task> = Task.fetchRequest()
         let predicateCategoryName = NSPredicate(format: "categoryName MATCHES %@", categorySelected!.name!)
         let predicateName = (searchBarText == "") ?
         NSPredicate(format: "name LIKE[cd] %@", "*") :
@@ -126,28 +126,28 @@ extension DataManager {
         NSSortDescriptor(key: "completionDate", ascending: false)
         request.sortDescriptors = [sortDescriptorDate, sortDescriptorName]
         do {
-            let fetchedItem = try context.fetch(request)
-            itemArray = (fetchedItem.count == 0) ? nil : fetchedItem
+            let fetchedTask = try context.fetch(request)
+            taskArray = (fetchedTask.count == 0) ? nil : fetchedTask
         } catch {
-            print("readDatabaseEntityItem Error: \(error.localizedDescription)")
+            print("readDatabaseEntityTask Error: \(error.localizedDescription)")
         }
     }
     
-    func updateDatabaseEntityItem(index: Int, newName: String = "") -> Bool {
+    func updateDatabaseEntityTask(index: Int, newName: String = "") -> Bool {
         if newName == "" {
-            itemArray![index].isDone = !(itemArray![index].isDone)
-            itemArray![index].completionDate = (itemArray![index].completionDate == nil) ? Date() : nil
+            taskArray![index].isDone = !(taskArray![index].isDone)
+            taskArray![index].completionDate = (taskArray![index].completionDate == nil) ? Date() : nil
         } else {
             let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
-            itemArray![index].name = nameTransformed
+            taskArray![index].name = nameTransformed
         }
         saveDatabase()
         return true
     }
     
-    func deleteDatabaseEntityItem(index: Int) {
-        context.delete(itemArray![index])
-        itemArray!.remove(at: index)
+    func deleteDatabaseEntityTask(index: Int) {
+        context.delete(taskArray![index])
+        taskArray!.remove(at: index)
         saveDatabase()
     }
     
