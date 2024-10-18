@@ -49,9 +49,9 @@ class TaskViewController: BaseTableViewController {
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeTaskArray[indexPath.row].name
             cell.detailTextLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
-            cell.detailTextLabel?.text =  "Created: " + dataManager.dateToString(date: safeTaskArray[indexPath.row].creationDate!)
+            cell.detailTextLabel?.text =  "Created: " + dataManager.dateToString(safeTaskArray[indexPath.row].creationDate!)
             cell.detailTextLabel?.text = safeTaskArray[indexPath.row].isDone ?
-            ("Completed: " + dataManager.dateToString(date: safeTaskArray[indexPath.row].completionDate!) + "\n" + cell.detailTextLabel!.text!) :
+            ("Completed: " + dataManager.dateToString(safeTaskArray[indexPath.row].completionDate!) + "\n" + cell.detailTextLabel!.text!) :
             cell.detailTextLabel?.text
             cell.accessoryView = safeTaskArray[indexPath.row].isDone ?
             UIImageView(image: UIImage(systemName: "checkmark.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))) :

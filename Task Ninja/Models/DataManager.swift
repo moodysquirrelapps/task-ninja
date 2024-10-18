@@ -27,10 +27,17 @@ class DataManager {
         }
     }
     
-    func dateToString(date: Date) -> String {
+    func dateToString(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: date)
+    }
+    
+    func transformText(_ text: String) -> String {
+        let newText = text.trimmingCharacters(in: .whitespaces)
+        return (newText.count > 1) ?
+        (newText.prefix(1).uppercased() + newText.lowercased().dropFirst()) :
+        newText.prefix(1).uppercased()
     }
     
 }
@@ -41,10 +48,10 @@ extension DataManager {
     
     func createDatabaseEntityCategory(name: String) -> Bool {
         // Unique Name Constraint
-        let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
+        let nameTransformed = transformText(name)
         if let safeCategoryArray = categoryArray {
             for category in safeCategoryArray {
-                if (category.name!.capitalized == nameTransformed) { return false }
+                if (category.name == nameTransformed) { return false }
             }
         }
         // Create New Category
@@ -72,14 +79,14 @@ extension DataManager {
     
     func updateDatabaseEntityCategory(index: Int, newName: String) -> Bool {
         // Unique Name Constraint
-        let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
+        let newNameTransformed = transformText(newName)
         if let safeCategoryArray = categoryArray {
             for category in safeCategoryArray {
-                if (category.name!.capitalized == nameTransformed) { return false }
+                if (category.name == newNameTransformed) { return false }
             }
         }
         // Edit Current Category
-        categoryArray![index].name = nameTransformed
+        categoryArray![index].name = newNameTransformed
         // Save Changes
         saveDatabase()
         return true
@@ -101,7 +108,7 @@ extension DataManager {
     
     func createDatabaseEntityTask(name: String) -> Bool {
         // Create New Task
-        let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
+        let nameTransformed = transformText(name)
         let newTask = Task(context: self.context)
         newTask.categoryName = categorySelected!.name
         newTask.name = nameTransformed
@@ -145,8 +152,8 @@ extension DataManager {
             taskArray![index].isDone = !(taskArray![index].isDone)
             taskArray![index].completionDate = (taskArray![index].completionDate == nil) ? Date() : nil
         } else { // Edit Current Name
-            let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
-            taskArray![index].name = nameTransformed
+            let newNameTransformed = transformText(newName)
+            taskArray![index].name = newNameTransformed
         }
         // Save Changes
         saveDatabase()
