@@ -1,8 +1,8 @@
 # Purpose
-An iOS mobile application to manage tasks.
+An iOS mobile application for managing todos and providing completion metrics.
 
 # Implementation
 Add later...
 
-# Results
+# Conclusion
 Add later...
