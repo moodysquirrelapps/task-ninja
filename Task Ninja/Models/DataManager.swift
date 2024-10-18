@@ -59,7 +59,9 @@ extension DataManager {
     
     func readDatabaseEntityCategory() {
         let request: NSFetchRequest<Category> = Category.fetchRequest()
+        // Sort Descriptors
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        // Fetch Data
         do {
             let fetchedCategory = try context.fetch(request)
             categoryArray = (fetchedCategory.count == 0) ? nil : fetchedCategory
@@ -84,8 +86,10 @@ extension DataManager {
     }
     
     func deleteDatabaseEntityCategory(index: Int) {
+        // Delete Current Category
         context.delete(categoryArray![index])
         categoryArray!.remove(at: index)
+        // Save Changes
         saveDatabase()
     }
     
@@ -112,6 +116,7 @@ extension DataManager {
     
     func readDatabaseEntityTask(withSearch searchBarText: String = "", withControl segmentedControlValue: String = "Active") {
         let request: NSFetchRequest<Task> = Task.fetchRequest()
+        // Predicates
         let predicateCategoryName = NSPredicate(format: "categoryName MATCHES %@", categorySelected!.name!)
         let predicateName = (searchBarText == "") ?
         NSPredicate(format: "name LIKE[cd] %@", "*") :
@@ -120,11 +125,13 @@ extension DataManager {
         NSPredicate(format: "isDone == %@", NSNumber(value: false)) :
         NSPredicate(format: "isDone == %@", NSNumber(value: true))
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateCategoryName, predicateName, predicateIsDone])
+        // Sort Descriptors
         let sortDescriptorName = NSSortDescriptor(key: "name", ascending: true)
         let sortDescriptorDate = (segmentedControlValue == "Active") ?
         NSSortDescriptor(key: "creationDate", ascending: false) :
         NSSortDescriptor(key: "completionDate", ascending: false)
         request.sortDescriptors = [sortDescriptorDate, sortDescriptorName]
+        // Fetch Data
         do {
             let fetchedTask = try context.fetch(request)
             taskArray = (fetchedTask.count == 0) ? nil : fetchedTask
@@ -134,20 +141,23 @@ extension DataManager {
     }
     
     func updateDatabaseEntityTask(index: Int, newName: String = "") -> Bool {
-        if newName == "" {
+        if newName == "" { // Edit Current Completion Status
             taskArray![index].isDone = !(taskArray![index].isDone)
             taskArray![index].completionDate = (taskArray![index].completionDate == nil) ? Date() : nil
-        } else {
+        } else { // Edit Current Name
             let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
             taskArray![index].name = nameTransformed
         }
+        // Save Changes
         saveDatabase()
         return true
     }
     
     func deleteDatabaseEntityTask(index: Int) {
+        // Delete Current Task
         context.delete(taskArray![index])
         taskArray!.remove(at: index)
+        // Save Changes
         saveDatabase()
     }
     

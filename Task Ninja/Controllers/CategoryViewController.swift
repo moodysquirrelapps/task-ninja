@@ -13,6 +13,10 @@ class CategoryViewController: BaseTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         dataManager.readDatabaseEntityCategory()
         tableView.reloadData()
     }
@@ -20,6 +24,7 @@ class CategoryViewController: BaseTableViewController {
     override func updateDatabaseEntity(indexPath: IndexPath) {
         editDatabaseEntityCategory(index: indexPath.row)
         dataManager.readDatabaseEntityCategory()
+        tableView.reloadData()
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
@@ -70,13 +75,15 @@ extension CategoryViewController {
         let addAction = UIAlertAction(title: "Add Category", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized) ?
-                self.dataManager.readDatabaseEntityCategory() :
-                self.invalidResponseAddPressed(message: "Category already exists.")
+                if self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized) {
+                    self.dataManager.readDatabaseEntityCategory()
+                    self.tableView.reloadData()
+                } else {
+                    self.invalidResponseAddPressed(message: "Category already exists.")
+                }
             } else {
                 self.invalidResponseAddPressed(message: "Response is empty.")
             }
-            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
         alert.addAction(addAction)
@@ -95,13 +102,15 @@ extension CategoryViewController {
         let editAction = UIAlertAction(title: "Edit Category", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                self.dataManager.updateDatabaseEntityCategory(index: index, newName: safeText) ?
-                self.dataManager.readDatabaseEntityCategory() :
-                self.invalidResponseAddPressed(message: "Category already exists.")
+                if self.dataManager.updateDatabaseEntityCategory(index: index, newName: safeText) {
+                    self.dataManager.readDatabaseEntityCategory()
+                    self.tableView.reloadData()
+                } else {
+                    self.invalidResponseAddPressed(message: "Category already exists.")
+                }
             } else {
                 self.invalidResponseAddPressed(message: "Response is empty.")
             }
-            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
         alert.addAction(editAction)

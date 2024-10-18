@@ -20,8 +20,6 @@ class TaskViewController: BaseTableViewController {
         super.viewDidLoad()
         backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
         tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
-        dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
-        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +38,9 @@ class TaskViewController: BaseTableViewController {
         segmentedControl.selectedSegmentTintColor = .white.withAlphaComponent(0.50)
         segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: smallFont], for: .normal)
         segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: smallFont], for: .selected)
+        // Refresh Table
+        dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
+        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,6 +81,7 @@ class TaskViewController: BaseTableViewController {
     override func updateDatabaseEntity(indexPath: IndexPath) {
         editDatabaseEntityTask(index: indexPath.row)
         dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
+        tableView.reloadData()
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
@@ -99,9 +101,12 @@ extension TaskViewController {
         let addAction = UIAlertAction(title: "Add Task", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                self.dataManager.createDatabaseEntityTask(name: safeText.capitalized) ?
-                self.dataManager.readDatabaseEntityTask(withSearch: self.searchBarText, withControl: self.segmentedControlValue) :
-                self.invalidResponseAddPressed(message: "Task already exists.")
+                if self.dataManager.createDatabaseEntityTask(name: safeText.capitalized) {
+                    self.dataManager.readDatabaseEntityTask(withSearch: self.searchBarText, withControl: self.segmentedControlValue)
+                    self.tableView.reloadData()
+                } else {
+                    self.invalidResponseAddPressed(message: "Task already exists.")
+                }
             } else {
                 self.invalidResponseAddPressed(message: "Response is empty.")
             }
@@ -124,9 +129,12 @@ extension TaskViewController {
         let editAction = UIAlertAction(title: "Edit Task", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                self.dataManager.updateDatabaseEntityTask(index: index, newName: safeText) ?
-                self.dataManager.readDatabaseEntityTask(withSearch: self.searchBarText, withControl: self.segmentedControlValue) :
-                self.invalidResponseAddPressed(message: "Task already exists.")
+                if self.dataManager.updateDatabaseEntityTask(index: index, newName: safeText) {
+                    self.dataManager.readDatabaseEntityTask(withSearch: self.searchBarText, withControl: self.segmentedControlValue)
+                    self.tableView.reloadData()
+                } else {
+                    self.invalidResponseAddPressed(message: "Task already exists.")
+                }
             } else {
                 self.invalidResponseAddPressed(message: "Response is empty.")
             }

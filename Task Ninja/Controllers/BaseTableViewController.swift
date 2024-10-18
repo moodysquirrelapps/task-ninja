@@ -51,6 +51,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         tableView.addSubview(safeAreaView)
     }
     
+    // Regular TableView Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
         cell.delegate = self
