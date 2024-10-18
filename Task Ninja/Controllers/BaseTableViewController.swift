@@ -18,7 +18,6 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 80.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.backgroundColor = .white

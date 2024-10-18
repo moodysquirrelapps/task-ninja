@@ -23,13 +23,10 @@ class CategoryViewController: BaseTableViewController {
     
     override func updateDatabaseEntity(indexPath: IndexPath) {
         editDatabaseEntityCategory(index: indexPath.row)
-        dataManager.readDatabaseEntityCategory()
-        tableView.reloadData()
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityCategory(index: indexPath.row)
-        dataManager.readDatabaseEntityCategory()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

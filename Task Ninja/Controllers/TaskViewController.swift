@@ -71,22 +71,20 @@ class TaskViewController: BaseTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dataManager.taskArray != nil {
-            _ = dataManager.updateDatabaseEntityTask(index: indexPath.row)
-            dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
-            tableView.reloadData()
+            if dataManager.updateDatabaseEntityTask(index: indexPath.row) {
+                dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
+                tableView.reloadData()
+            }
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func updateDatabaseEntity(indexPath: IndexPath) {
         editDatabaseEntityTask(index: indexPath.row)
-        dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
-        tableView.reloadData()
     }
     
     override func deleteDatabaseEntity(indexPath: IndexPath) {
         dataManager.deleteDatabaseEntityTask(index: indexPath.row)
-        dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
     }
     
 }
