@@ -13,6 +13,7 @@ class CategoryViewController: BaseTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 80.0
     }
     
     override func viewWillAppear(_ animated: Bool) {

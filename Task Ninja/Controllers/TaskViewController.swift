@@ -18,15 +18,14 @@ class TaskViewController: BaseTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 100.0
         backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
         tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = (dataManager.categorySelected!.name!.count <= 22) ?
-        dataManager.categorySelected!.name :
-        (dataManager.categorySelected!.name!.prefix(22) + "...")
+        navigationItem.title = dataManager.categorySelected!.name
         uiViewBar.backgroundColor = backgroundColor
         // Search Bar
         searchBar.searchTextField.font = smallFont
