@@ -21,6 +21,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         tableView.rowHeight = 80.0
         tableView.separatorStyle = .none
         tableView.backgroundColor = .white
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +42,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
         navBar.tintColor = tintColor
         navigationItem.rightBarButtonItem?.tintColor = tintColor
-        // Upper Safe Area
+        // Top Safe Area
         var frame = tableView.bounds
         frame.origin.y = -frame.size.height
         let safeAreaView = UIView(frame: frame)

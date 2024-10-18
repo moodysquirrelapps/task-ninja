@@ -10,30 +10,33 @@ import UIKit
 class ItemViewController: BaseTableViewController {
     
     let dataManager: DataManager = DataManager()
+    var segmentedControlValue: String = "Active"
+    var searchBarText: String = ""
+    @IBOutlet weak var uiViewBar: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
         tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
-        dataManager.readDatabaseEntityItem()
+        dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
         tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.title = dataManager.categorySelected!.name
+        uiViewBar.backgroundColor = backgroundColor
+        // Search Bar
         searchBar.searchTextField.font = smallFont
         searchBar.barTintColor = backgroundColor
         searchBar.searchTextField.backgroundColor = .white
-    }
-    
-    override func updateDatabaseEntity(indexPath: IndexPath) {
-        editDatabaseEntityItem(index: indexPath.row)
-    }
-    
-    override func deleteDatabaseEntity(indexPath: IndexPath) {
-        dataManager.deleteDatabaseEntityItem(index: indexPath.row)
+        // Segmented Control
+        segmentedControl.backgroundColor = backgroundColor
+        segmentedControl.selectedSegmentTintColor = .white.withAlphaComponent(0.50)
+        segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: smallFont], for: .normal)
+        segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: smallFont], for: .selected)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -53,21 +56,32 @@ class ItemViewController: BaseTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let itemArrayCount = dataManager.itemArray?.count ?? 0
-        (itemArrayCount == 0) ? setEmptyMessage(message: "No items added yet.") : restore()
+        (itemArrayCount == 0) ? setEmptyMessage(message: "No items found.") : restore()
         return itemArrayCount
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dataManager.itemArray != nil {
             _ = dataManager.updateDatabaseEntityItem(index: indexPath.row)
+            dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
             tableView.reloadData()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    override func updateDatabaseEntity(indexPath: IndexPath) {
+        editDatabaseEntityItem(index: indexPath.row)
+        dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
+    }
+    
+    override func deleteDatabaseEntity(indexPath: IndexPath) {
+        dataManager.deleteDatabaseEntityItem(index: indexPath.row)
+        dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
+    }
+    
 }
 
-// MARK: - Add Button Method
+// MARK: - Add And Edit Button Methods
 
 extension ItemViewController {
     
@@ -77,10 +91,13 @@ extension ItemViewController {
         let addAction = UIAlertAction(title: "Add Item", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                self.dataManager.createDatabaseEntityItem(name: safeText.capitalized) ? self.tableView.reloadData() : self.invalidResponseAddPressed(message: "Item already exists.")
+                self.dataManager.createDatabaseEntityItem(name: safeText.capitalized) ?
+                self.dataManager.readDatabaseEntityItem(withSearch: self.searchBarText, withControl: self.segmentedControlValue) :
+                self.invalidResponseAddPressed(message: "Item already exists.")
             } else {
                 self.invalidResponseAddPressed(message: "Response is empty.")
             }
+            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
         alert.addAction(addAction)
@@ -98,10 +115,13 @@ extension ItemViewController {
         let editAction = UIAlertAction(title: "Edit Item", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                self.dataManager.updateDatabaseEntityItem(index: index, newName: safeText) ? self.tableView.reloadData() : self.invalidResponseAddPressed(message: "Item already exists.")
+                self.dataManager.updateDatabaseEntityItem(index: index, newName: safeText) ?
+                self.dataManager.readDatabaseEntityItem(withSearch: self.searchBarText, withControl: self.segmentedControlValue) :
+                self.invalidResponseAddPressed(message: "Item already exists.")
             } else {
                 self.invalidResponseAddPressed(message: "Response is empty.")
             }
+            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
         alert.addAction(editAction)
@@ -116,23 +136,36 @@ extension ItemViewController {
     
 }
 
-//MARK: - UISearchBarDelegate
+//MARK: - UISearchBarDelegate Methods
 
 extension ItemViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        dataManager.readDatabaseEntityItem(searchBarText: searchBar.text ?? "")
+        dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
         tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText == "" {
-            self.dataManager.readDatabaseEntityItem(searchBarText: searchText)
-            self.tableView.reloadData()
+        searchBarText = searchText
+        if searchBarText == "" {
+            dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
+            tableView.reloadData()
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
         }
+    }
+    
+}
+
+//MARK: - SegmentedControl Methods
+
+extension ItemViewController {
+    
+    @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
+        segmentedControlValue = sender.titleForSegment(at: sender.selectedSegmentIndex)!
+        dataManager.readDatabaseEntityItem(withSearch: searchBarText, withControl: segmentedControlValue)
+        tableView.reloadData()
     }
     
 }

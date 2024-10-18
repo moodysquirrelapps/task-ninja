@@ -54,8 +54,6 @@ extension DataManager {
         newCategory.cellBackgroundColorHexString = newCellBackgroundColor.hexString()
         // Save Changes
         saveDatabase()
-        // Refresh Category Array
-        readDatabaseEntityCategory()
         return true
     }
     
@@ -82,15 +80,13 @@ extension DataManager {
         categoryArray![index].name = nameTransformed
         // Save Changes
         saveDatabase()
-        // Refresh Category Array
-        readDatabaseEntityCategory()
         return true
     }
     
     func deleteDatabaseEntityCategory(index: Int) {
         context.delete(categoryArray![index])
+        categoryArray!.remove(at: index)
         saveDatabase()
-        readDatabaseEntityCategory()
     }
     
 }
@@ -100,14 +96,8 @@ extension DataManager {
 extension DataManager {
     
     func createDatabaseEntityItem(name: String) -> Bool {
-        // Unique Name Constraint
-        let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
-        if let safeItemArray = itemArray {
-            for item in safeItemArray {
-                if (item.name!.capitalized == nameTransformed) { return false }
-            }
-        }
         // Create New Item
+        let nameTransformed = name.capitalized.trimmingCharacters(in: .whitespaces)
         let newItem = Item(context: self.context)
         newItem.categoryName = categorySelected!.name
         newItem.name = nameTransformed
@@ -116,14 +106,15 @@ extension DataManager {
         newItem.parentCategory = categorySelected!
         // Save Changes
         saveDatabase()
-        // Refresh Item Array
-        readDatabaseEntityItem()
         return true
     }
     
-    func readDatabaseEntityItem(searchBarText: String = "") {
+    func readDatabaseEntityItem(withSearch searchBarText: String = "", withControl segmentedControlValue: String = "Active") {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
-        request.predicate = (searchBarText == "") ? NSPredicate(format: "categoryName MATCHES %@", categorySelected!.name!) : NSPredicate(format: "categoryName MATCHES %@ AND name CONTAINS[cd] %@", categorySelected!.name!, searchBarText)
+        let predicateCategoryName = NSPredicate(format: "categoryName MATCHES %@", categorySelected!.name!)
+        let predicateName = (searchBarText == "") ? NSPredicate(format: "name LIKE[cd] %@", "*") : NSPredicate(format: "name CONTAINS[cd] %@", searchBarText)
+        let predicateIsDone = (segmentedControlValue == "Active") ? NSPredicate(format: "isDone == %@", NSNumber(value: false)) : NSPredicate(format: "isDone == %@", NSNumber(value: true))
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateCategoryName, predicateName, predicateIsDone])
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
         do {
             let fetchedItem = try context.fetch(request)
@@ -136,30 +127,18 @@ extension DataManager {
     func updateDatabaseEntityItem(index: Int, newName: String = "") -> Bool {
         if newName == "" {
             itemArray![index].isDone = !(itemArray![index].isDone)
-            saveDatabase()
-            readDatabaseEntityItem()
         } else {
-            // Unique Name Constraint
             let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
-            if let safeItemArray = itemArray {
-                for item in safeItemArray {
-                    if (item.name!.capitalized == nameTransformed) { return false }
-                }
-            }
-            // Edit Current Item
             itemArray![index].name = nameTransformed
-            // Save Changes
-            saveDatabase()
-            // Refresh Item Array
-            readDatabaseEntityItem()
         }
+        saveDatabase()
         return true
     }
     
     func deleteDatabaseEntityItem(index: Int) {
         context.delete(itemArray![index])
+        itemArray!.remove(at: index)
         saveDatabase()
-        readDatabaseEntityItem()
     }
     
 }
