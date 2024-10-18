@@ -18,7 +18,8 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = 80.0
+        tableView.estimatedRowHeight = 80.0
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.backgroundColor = .white
         UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
@@ -55,6 +56,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         cell.delegate = self
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = regularFont
+        cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.font = smallFont
         return cell
     }

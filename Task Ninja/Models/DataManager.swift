@@ -62,7 +62,7 @@ extension DataManager {
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         do {
             let fetchedCategory = try context.fetch(request)
-            categoryArray = fetchedCategory.count == 0 ? nil : fetchedCategory
+            categoryArray = (fetchedCategory.count == 0) ? nil : fetchedCategory
         } catch {
             print("readDatabaseEntityCategory Error: \(error.localizedDescription)")
         }
@@ -102,7 +102,8 @@ extension DataManager {
         newItem.categoryName = categorySelected!.name
         newItem.name = nameTransformed
         newItem.isDone = false
-        newItem.date = Date()
+        newItem.creationDate = Date()
+        newItem.completionDate = nil
         newItem.parentCategory = categorySelected!
         // Save Changes
         saveDatabase()
@@ -112,13 +113,21 @@ extension DataManager {
     func readDatabaseEntityItem(withSearch searchBarText: String = "", withControl segmentedControlValue: String = "Active") {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         let predicateCategoryName = NSPredicate(format: "categoryName MATCHES %@", categorySelected!.name!)
-        let predicateName = (searchBarText == "") ? NSPredicate(format: "name LIKE[cd] %@", "*") : NSPredicate(format: "name CONTAINS[cd] %@", searchBarText)
-        let predicateIsDone = (segmentedControlValue == "Active") ? NSPredicate(format: "isDone == %@", NSNumber(value: false)) : NSPredicate(format: "isDone == %@", NSNumber(value: true))
+        let predicateName = (searchBarText == "") ?
+        NSPredicate(format: "name LIKE[cd] %@", "*") :
+        NSPredicate(format: "name CONTAINS[cd] %@", searchBarText)
+        let predicateIsDone = (segmentedControlValue == "Active") ?
+        NSPredicate(format: "isDone == %@", NSNumber(value: false)) :
+        NSPredicate(format: "isDone == %@", NSNumber(value: true))
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateCategoryName, predicateName, predicateIsDone])
-        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
+        let sortDescriptorName = NSSortDescriptor(key: "name", ascending: true)
+        let sortDescriptorDate = (segmentedControlValue == "Active") ?
+        NSSortDescriptor(key: "creationDate", ascending: false) :
+        NSSortDescriptor(key: "completionDate", ascending: false)
+        request.sortDescriptors = [sortDescriptorDate, sortDescriptorName]
         do {
             let fetchedItem = try context.fetch(request)
-            itemArray = fetchedItem.count == 0 ? nil : fetchedItem
+            itemArray = (fetchedItem.count == 0) ? nil : fetchedItem
         } catch {
             print("readDatabaseEntityItem Error: \(error.localizedDescription)")
         }
@@ -127,6 +136,7 @@ extension DataManager {
     func updateDatabaseEntityItem(index: Int, newName: String = "") -> Bool {
         if newName == "" {
             itemArray![index].isDone = !(itemArray![index].isDone)
+            itemArray![index].completionDate = (itemArray![index].completionDate == nil) ? Date() : nil
         } else {
             let nameTransformed = newName.capitalized.trimmingCharacters(in: .whitespaces)
             itemArray![index].name = nameTransformed
