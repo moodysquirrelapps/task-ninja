@@ -18,7 +18,6 @@ class TaskViewController: BaseTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = 100.0
         backgroundColor = UIColor(dataManager.categorySelected!.cellBackgroundColorHexString!)
         tintColor = backgroundColor.isLight ? UIColor.black : UIColor.white
     }

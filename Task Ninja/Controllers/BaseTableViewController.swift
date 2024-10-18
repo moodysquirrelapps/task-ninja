@@ -18,8 +18,11 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 100.0
         tableView.separatorStyle = .none
         tableView.backgroundColor = .white
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).minimumScaleFactor = 0.50
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +55,11 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
         cell.delegate = self
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
+        cell.textLabel?.minimumScaleFactor = 0.50
         cell.textLabel?.font = regularFont
+        cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
+        cell.detailTextLabel?.minimumScaleFactor = 0.50
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.font = smallFont
         return cell
