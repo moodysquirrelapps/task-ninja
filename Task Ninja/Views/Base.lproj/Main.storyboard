@@ -86,10 +86,10 @@
                         <viewLayoutGuide key="safeArea" id="Uj7-9r-G8f"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="trailing" secondItem="Uj7-9r-G8f" secondAttribute="trailing" id="3d8-fL-Tr5"/>
-                            <constraint firstAttribute="bottom" secondItem="Ryh-lG-DpS" secondAttribute="bottom" id="gfS-UH-mPJ"/>
-                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="leading" secondItem="Uj7-9r-G8f" secondAttribute="leading" id="iHm-RW-Bhu"/>
-                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="top" secondItem="Uj7-9r-G8f" secondAttribute="top" id="mC0-YX-YPp"/>
+                            <constraint firstAttribute="bottom" secondItem="Ryh-lG-DpS" secondAttribute="bottom" id="FzX-tD-Jkb"/>
+                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="leading" secondItem="Uj7-9r-G8f" secondAttribute="leading" id="YeM-5g-ajV"/>
+                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="trailing" secondItem="Uj7-9r-G8f" secondAttribute="trailing" id="dYF-Uv-J5V"/>
+                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="top" secondItem="Uj7-9r-G8f" secondAttribute="top" id="zYR-du-fJX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xiC-Ca-n6n"/>
@@ -230,7 +230,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

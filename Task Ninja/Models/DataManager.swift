@@ -11,12 +11,12 @@ import UIColorHexSwift
 
 class DataManager {
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var categoryArray: [Category]?
     var taskArray: [Task]?
     var categorySelected: Category?
     
-    func saveDatabase() {
+    private func saveDatabase() {
         if context.hasChanges {
             do {
                 try context.save()
@@ -33,7 +33,7 @@ class DataManager {
         return dateFormatter.string(from: date)
     }
     
-    func transformText(_ text: String) -> String {
+    private func transformText(_ text: String) -> String {
         let newText = text.trimmingCharacters(in: .whitespaces)
         return (newText.count > 1) ?
         (newText.prefix(1).uppercased() + newText.lowercased().dropFirst()) :
@@ -57,7 +57,7 @@ extension DataManager {
         // Create New Category
         let newCategory = Category(context: self.context)
         newCategory.name = nameTransformed
-        let newCellBackgroundColor = UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1.00)
+        let newCellBackgroundColor = UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: K.maxAlpha)
         newCategory.cellBackgroundColorHexString = newCellBackgroundColor.hexString()
         // Save Changes
         saveDatabase()

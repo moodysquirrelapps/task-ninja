@@ -10,8 +10,8 @@ import UIKit
 class TaskViewController: BaseTableViewController {
     
     let dataManager: DataManager = DataManager()
-    var segmentedControlValue: String = "Active"
-    var searchBarText: String = ""
+    private var segmentedControlValue: String = "Active"
+    private var searchBarText: String = ""
     @IBOutlet weak var uiViewBar: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -27,15 +27,15 @@ class TaskViewController: BaseTableViewController {
         navigationItem.title = dataManager.categorySelected!.name
         uiViewBar.backgroundColor = backgroundColor
         // Search Bar
-        searchBar.searchTextField.font = smallFont
+        searchBar.searchTextField.font = K.smallFont
         searchBar.barTintColor = backgroundColor
         searchBar.searchTextField.backgroundColor = .white
         searchBar.searchTextField.textColor = .black
         // Segmented Control
         segmentedControl.backgroundColor = backgroundColor
-        segmentedControl.selectedSegmentTintColor = .white.withAlphaComponent(0.50)
-        segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: smallFont], for: .normal)
-        segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: smallFont], for: .selected)
+        segmentedControl.selectedSegmentTintColor = .white.withAlphaComponent(K.minAlpha)
+        segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: K.smallFont], for: .normal)
+        segmentedControl.setTitleTextAttributes([.foregroundColor: tintColor, .font: K.smallFont], for: .selected)
         // Refresh Table
         dataManager.readDatabaseEntityTask(withSearch: searchBarText, withControl: segmentedControlValue)
         tableView.reloadData()
@@ -44,7 +44,7 @@ class TaskViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let safeTaskArray = dataManager.taskArray, let categorySelected = dataManager.categorySelected {
-            let newAlpha = CGFloat(0.50 +  Float(indexPath.row + 1) * (1.00 - 0.50) / Float(safeTaskArray.count))
+            let newAlpha = (K.minAlpha +  CGFloat(indexPath.row + 1) * (K.maxAlpha - K.minAlpha) / CGFloat(safeTaskArray.count))
             cell.backgroundColor = UIColor(categorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeTaskArray[indexPath.row].name
@@ -54,8 +54,8 @@ class TaskViewController: BaseTableViewController {
             ("Completed: " + dataManager.dateToString(safeTaskArray[indexPath.row].completionDate!) + "\n" + cell.detailTextLabel!.text!) :
             cell.detailTextLabel?.text
             cell.accessoryView = safeTaskArray[indexPath.row].isDone ?
-            UIImageView(image: UIImage(systemName: "checkmark.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))) :
-            UIImageView(image: UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0)))
+            UIImageView(image: UIImage(systemName: "checkmark.square.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: K.regularSize))) :
+            UIImageView(image: UIImage(systemName: "square", withConfiguration: UIImage.SymbolConfiguration(pointSize: K.regularSize)))
             cell.tintColor = cell.backgroundColor!.isLight ? .black : .white
         }
         return cell
@@ -119,7 +119,7 @@ extension TaskViewController {
         present(alert, animated: true) { }
     }
     
-    func editDatabaseEntityTask(index: Int) {
+    private func editDatabaseEntityTask(index: Int) {
         var inputTextField = UITextField()
         let alert = UIAlertController(title: "Edit Current Task:", message: "", preferredStyle: .alert)
         let editAction = UIAlertAction(title: "Edit Task", style: .default) { action in

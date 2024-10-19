@@ -36,7 +36,7 @@ class CategoryViewController: BaseTableViewController {
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.textLabel?.text = safeCategoryArray[indexPath.row].name
             cell.detailTextLabel?.text = nil
-            cell.accessoryView = UIImageView(image: UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0)))
+            cell.accessoryView = UIImageView(image: UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: K.regularSize)))
             cell.tintColor = cell.backgroundColor!.isLight ? .black : .white
         }
         return cell
@@ -93,7 +93,7 @@ extension CategoryViewController {
         present(alert, animated: true) { }
     }
     
-    func editDatabaseEntityCategory(index: Int) {
+    private func editDatabaseEntityCategory(index: Int) {
         var inputTextField = UITextField()
         let alert = UIAlertController(title: "Edit Current Category:", message: "", preferredStyle: .alert)
         let editAction = UIAlertAction(title: "Edit Category", style: .default) { action in

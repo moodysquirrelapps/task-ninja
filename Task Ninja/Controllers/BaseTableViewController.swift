@@ -10,18 +10,15 @@ import SwipeCellKit
 
 class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate {
     
-    let smallFont: UIFont = UIFont(name: "ZenDots-Regular", size: 14.0)!
-    let regularFont: UIFont = UIFont(name: "ZenDots-Regular", size: 24.0)!
-    let titleFont: UIFont = UIFont(name: "ZenDots-Regular", size: 40.0)!
-    var backgroundColor: UIColor = UIColor.systemBlue
-    var tintColor: UIColor = UIColor.white
+    var backgroundColor = K.backgroundColor
+    var tintColor = K.tintColor
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = 100.0
+        tableView.rowHeight = K.cellHeight
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .white
-        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).minimumScaleFactor = 0.50
+        tableView.backgroundColor = tintColor
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).minimumScaleFactor = K.minScaleFactor
         UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
     }
     
@@ -33,14 +30,14 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         navBar.standardAppearance.backgroundColor = backgroundColor
         navBar.compactAppearance?.backgroundColor = backgroundColor
         navBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
-        navBar.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
+        navBar.titleTextAttributes = [.foregroundColor: tintColor, .font: K.regularFont]
+        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: tintColor, .font: K.regularFont]
+        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: K.regularFont]
+        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: K.regularFont]
+        navBar.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: K.titleFont]
+        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: K.titleFont]
+        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: K.titleFont]
+        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: K.titleFont]
         navBar.tintColor = tintColor
         navigationItem.rightBarButtonItem?.tintColor = tintColor
         // Top Safe Area
@@ -56,12 +53,12 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
         cell.delegate = self
         cell.textLabel?.adjustsFontSizeToFitWidth = true
-        cell.textLabel?.minimumScaleFactor = 0.50
-        cell.textLabel?.font = regularFont
+        cell.textLabel?.minimumScaleFactor = K.minScaleFactor
+        cell.textLabel?.font = K.regularFont
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
-        cell.detailTextLabel?.minimumScaleFactor = 0.50
+        cell.detailTextLabel?.minimumScaleFactor = K.minScaleFactor
+        cell.detailTextLabel?.font = K.smallFont
         cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel?.font = smallFont
         return cell
     }
     
@@ -81,9 +78,9 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         let deleteAction = SwipeAction(style: .destructive, title: nil) { action, indexPath in
             self.deleteDatabaseEntity(indexPath: indexPath)
         }
-        editAction.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))
+        editAction.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: K.regularSize))
         editAction.backgroundColor = UIColor.systemYellow
-        deleteAction.image = UIImage(systemName: "trash.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22.0))
+        deleteAction.image = UIImage(systemName: "trash.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: K.regularSize))
         deleteAction.backgroundColor = UIColor.systemRed
         return [deleteAction, editAction]
     }
@@ -109,7 +106,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.textColor = .black
-        messageLabel.font = regularFont
+        messageLabel.font = K.regularFont
         messageLabel.text = message
         messageLabel.sizeToFit()
         tableView.backgroundView = messageLabel

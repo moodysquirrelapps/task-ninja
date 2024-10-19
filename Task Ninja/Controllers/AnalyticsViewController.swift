@@ -10,12 +10,7 @@ import SwiftUI
 
 class AnalyticsViewController: UIViewController {
     
-    let categoriesChartView = UIHostingController(rootView: CategoriesChart())
-    let smallFont: UIFont = UIFont(name: "ZenDots-Regular", size: 14.0)!
-    let regularFont: UIFont = UIFont(name: "ZenDots-Regular", size: 24.0)!
-    let titleFont: UIFont = UIFont(name: "ZenDots-Regular", size: 40.0)!
-    var backgroundColor: UIColor = UIColor.systemBlue
-    var tintColor: UIColor = UIColor.white
+    private let categoriesChartView = UIHostingController(rootView: CategoriesChart())
     @IBOutlet weak var chartsView: UIView!
     
     override func viewDidLoad() {
@@ -26,22 +21,22 @@ class AnalyticsViewController: UIViewController {
         // Navigation Bar
         navigationItem.title = "Analytics"
         guard let navBar = navigationController?.navigationBar else { fatalError("categoryVC error: Navigation Bar is nil.") }
-        navBar.backgroundColor = backgroundColor
-        navBar.standardAppearance.backgroundColor = backgroundColor
-        navBar.compactAppearance?.backgroundColor = backgroundColor
-        navBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
-        navBar.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: tintColor, .font: regularFont]
-        navBar.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: tintColor, .font: titleFont]
-        navBar.tintColor = tintColor
-        navigationItem.rightBarButtonItem?.tintColor = tintColor
+        navBar.backgroundColor = K.backgroundColor
+        navBar.standardAppearance.backgroundColor = K.backgroundColor
+        navBar.compactAppearance?.backgroundColor = K.backgroundColor
+        navBar.scrollEdgeAppearance?.backgroundColor = K.backgroundColor
+        navBar.titleTextAttributes = [.foregroundColor: K.tintColor, .font: K.regularFont]
+        navBar.standardAppearance.titleTextAttributes = [.foregroundColor: K.tintColor, .font: K.regularFont]
+        navBar.compactAppearance?.titleTextAttributes = [.foregroundColor: K.tintColor, .font: K.regularFont]
+        navBar.scrollEdgeAppearance?.titleTextAttributes = [.foregroundColor: K.tintColor, .font: K.regularFont]
+        navBar.largeTitleTextAttributes = [.foregroundColor: K.tintColor, .font: K.titleFont]
+        navBar.standardAppearance.largeTitleTextAttributes = [.foregroundColor: K.tintColor, .font: K.titleFont]
+        navBar.compactAppearance?.largeTitleTextAttributes = [.foregroundColor: K.tintColor, .font: K.titleFont]
+        navBar.scrollEdgeAppearance?.largeTitleTextAttributes = [.foregroundColor: K.tintColor, .font: K.titleFont]
+        navBar.tintColor = K.tintColor
+        navigationItem.rightBarButtonItem?.tintColor = K.tintColor
         // Top Safe Area
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = K.backgroundColor
         // Charts
         categoriesChartView.view.frame = chartsView.bounds
         chartsView.addSubview(categoriesChartView.view)

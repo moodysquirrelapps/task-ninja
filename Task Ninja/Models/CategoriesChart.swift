@@ -36,9 +36,10 @@ struct CategoriesAnalytics {
         instantiateProperties()
     }
     
-    mutating func instantiateProperties() {
+    private mutating func instantiateProperties() {
         dataManager.readDatabaseEntityCategory()
-        for (index, category) in dataManager.categoryArray!.enumerated() {
+        guard let safeCategoryArray = dataManager.categoryArray else { return }
+        for (index, category) in safeCategoryArray.enumerated() {
             // Name
             dataManager.categorySelected = category
             let newCategoryName = category.name!
@@ -61,61 +62,79 @@ struct CategoriesAnalytics {
 
 struct CategoriesChart: View {
     
-    let categoriesAnalytics = CategoriesAnalytics()
-    let smallFont: UIFont = UIFont(name: "ZenDots-Regular", size: 14.0)!
-    let regularFont: UIFont = UIFont(name: "ZenDots-Regular", size: 24.0)!
-    let titleFont: UIFont = UIFont(name: "ZenDots-Regular", size: 40.0)!
+    private let categoriesAnalytics = CategoriesAnalytics()
     
     var body: some View {
-        ScrollView {
-            VStack {
-                if #available(iOS 16.0, *) {
-                    let dataArray = categoriesAnalytics.categoriesAnalyticsArray
-                    let defaultHeight = 100
-                    Chart(dataArray, id: \.category) { category in
-                        BarMark(
-                            x: .value("Sum", category.categoryData.sumActive),
-                            y: .value("Name", category.category)
-                        )
-                        .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(0.50)))
-                        .position(by: .value("Status", "Active"))
-                        .annotation(position: .trailing, alignment: .trailing) {
-                            Text("Active = \(category.categoryData.sumActive)")
-                                .font(Font(smallFont as CTFont))
-                                .foregroundColor(.black)
+        if #available(iOS 16.0, *) {
+            let dataArray = categoriesAnalytics.categoriesAnalyticsArray
+            let dataArraySize = dataArray.count
+            if dataArraySize > 0 {
+                ScrollView {
+                    VStack {
+                        let defaultHeight = K.cellHeight
+                        Chart(dataArray, id: \.category) { category in
+                            BarMark(
+                                x: .value("Sum", category.categoryData.sumActive),
+                                y: .value("Name", category.category)
+                            )
+                            .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(K.minAlpha)))
+                            .position(by: .value("Status", "Active"))
+                            .annotation(position: .trailing, alignment: .trailing) {
+                                Text("Active = \(category.categoryData.sumActive)")
+                                    .font(Font(K.smallFont as CTFont))
+                                    .foregroundColor(.black)
+                            }
+                            BarMark(
+                                x: .value("Sum", category.categoryData.sumDone),
+                                y: .value("Name", category.category)
+                            )
+                            .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(K.maxAlpha)))
+                            .position(by: .value("Status", "Done"))
+                            .annotation(position: .trailing, alignment: .trailing) {
+                                Text("Done = \(category.categoryData.sumDone)")
+                                    .font(Font(K.smallFont as CTFont))
+                                    .foregroundColor(.black)
+                            }
                         }
-                        BarMark(
-                            x: .value("Sum", category.categoryData.sumDone),
-                            y: .value("Name", category.category)
-                        )
-                        .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(1.00)))
-                        .position(by: .value("Status", "Done"))
-                        .annotation(position: .trailing, alignment: .trailing) {
-                            Text("Done = \(category.categoryData.sumDone)")
-                                .font(Font(smallFont as CTFont))
-                                .foregroundColor(.black)
-                        }
-                    }
-                    .frame(height: CGFloat(dataArray.count * defaultHeight))
-                    .chartXAxis { }
-                    .chartYAxis {
-                        AxisMarks {
-                            let value = $0.as(String.self)!
-                            AxisValueLabel {
-                                Text("\(value)")
-                                    .font(Font(regularFont as CTFont))
-                                    .foregroundStyle(.black)
-                                    .underline()
+                        .frame(height: CGFloat(dataArraySize) * defaultHeight)
+                        .chartXAxis { }
+                        .chartYAxis {
+                            AxisMarks {
+                                let value = $0.as(String.self)!
+                                let valueAdjusted = (value.count > 18) ? String(value.prefix(18) + "...") : value
+                                AxisValueLabel {
+                                    Text("\(valueAdjusted):")
+                                        .font(Font(K.regularFont as CTFont))
+                                        .foregroundStyle(.black)
+                                }
                             }
                         }
                     }
-                } else {
-                    Text("Please upgrade to iOS 16.0 or higher.")
-                        .font(Font(smallFont as CTFont))
-                        .multilineTextAlignment(.center)
+                    .padding(.all, K.regularSize)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
+            } else {
+                VStack {
+                    Text("No data available.")
+                        .font(Font(K.regularFont as CTFont))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.black)
+                        .padding(.all, K.regularSize)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
             }
-            .padding(.all, 24.0)
+        } else {
+            VStack {
+                Text("Please upgrade to iOS 16.0 or higher.")
+                    .font(Font(K.regularFont as CTFont))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.black)
+                    .padding(.all, K.regularSize)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.white)
         }
     }
     
