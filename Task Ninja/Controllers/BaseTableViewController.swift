@@ -1,6 +1,6 @@
 //
 //  SwipeTableViewController.swift
-//  TaskNinja
+//  Task Ninja
 //
 //  Created by Tam Le on 10/12/24.
 //

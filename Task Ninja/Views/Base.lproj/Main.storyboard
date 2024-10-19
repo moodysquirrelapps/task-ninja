@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -48,6 +49,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Task Ninja" id="76C-Hv-vTF">
+                        <barButtonItem key="leftBarButtonItem" image="chart.bar.fill" catalog="system" id="BMP-NT-XzH">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <segue destination="8hl-cz-p2D" kind="show" id="AKM-6Z-4lb"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="plus" catalog="system" id="36Q-Do-T7w">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -62,6 +69,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QJB-jW-T72" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2720" y="-330"/>
+        </scene>
+        <!--Analytics View Controller-->
+        <scene sceneID="ek0-JQ-InQ">
+            <objects>
+                <viewController id="8hl-cz-p2D" customClass="AnalyticsViewController" customModule="Task_Ninja" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MGy-vy-wFU">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ryh-lG-DpS" userLabel="Charts">
+                                <rect key="frame" x="0.0" y="155" width="393" height="697"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Uj7-9r-G8f"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="trailing" secondItem="Uj7-9r-G8f" secondAttribute="trailing" id="3d8-fL-Tr5"/>
+                            <constraint firstAttribute="bottom" secondItem="Ryh-lG-DpS" secondAttribute="bottom" id="gfS-UH-mPJ"/>
+                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="leading" secondItem="Uj7-9r-G8f" secondAttribute="leading" id="iHm-RW-Bhu"/>
+                            <constraint firstItem="Ryh-lG-DpS" firstAttribute="top" secondItem="Uj7-9r-G8f" secondAttribute="top" id="mC0-YX-YPp"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="xiC-Ca-n6n"/>
+                    <connections>
+                        <outlet property="chartsView" destination="Ryh-lG-DpS" id="hoJ-4n-ORL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RYX-s7-CrT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2719.8473282442746" y="381.69014084507046"/>
         </scene>
         <!--Items-->
         <scene sceneID="yK0-Wd-ufq">
@@ -186,6 +224,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="chart.bar.fill" catalog="system" width="128" height="90"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
