@@ -70,10 +70,6 @@ struct CategoriesChart: View {
         ScrollView {
             VStack {
                 if #available(iOS 16.0, *) {
-                    Text("Number Of Tasks")
-                        .font(Font(regularFont as CTFont))
-                        .foregroundColor(.black)
-                        .underline()
                     let dataArray = categoriesAnalytics.categoriesAnalyticsArray
                     let defaultHeight = 100
                     Chart(dataArray, id: \.category) { category in
@@ -83,7 +79,7 @@ struct CategoriesChart: View {
                         )
                         .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(0.50)))
                         .position(by: .value("Status", "Active"))
-                        .annotation(position: .trailing, alignment: .center) {
+                        .annotation(position: .trailing, alignment: .trailing) {
                             Text("Active = \(category.categoryData.sumActive)")
                                 .font(Font(smallFont as CTFont))
                                 .foregroundColor(.black)
@@ -94,7 +90,7 @@ struct CategoriesChart: View {
                         )
                         .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(1.00)))
                         .position(by: .value("Status", "Done"))
-                        .annotation(position: .trailing, alignment: .center) {
+                        .annotation(position: .trailing, alignment: .trailing) {
                             Text("Done = \(category.categoryData.sumDone)")
                                 .font(Font(smallFont as CTFont))
                                 .foregroundColor(.black)
@@ -106,9 +102,10 @@ struct CategoriesChart: View {
                         AxisMarks {
                             let value = $0.as(String.self)!
                             AxisValueLabel {
-                                Text("\(value):")
+                                Text("\(value)")
                                     .font(Font(regularFont as CTFont))
                                     .foregroundStyle(.black)
+                                    .underline()
                             }
                         }
                     }
