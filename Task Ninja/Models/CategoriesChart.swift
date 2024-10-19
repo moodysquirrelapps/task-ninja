@@ -67,51 +67,59 @@ struct CategoriesChart: View {
     let titleFont: UIFont = UIFont(name: "ZenDots-Regular", size: 40.0)!
     
     var body: some View {
-        VStack {
-            if #available(iOS 16.0, *) {
-                let dataArray = categoriesAnalytics.categoriesAnalyticsArray
-                Chart(dataArray, id: \.category) { category in
-                    BarMark(
-                        x: .value("Sum", category.categoryData.sumActive),
-                        y: .value("Name", category.category)
-                    )
-                    .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(0.50)))
-                    .position(by: .value("Status", "Active"))
-                    .annotation(position: .trailing, alignment: .center) {
-                        Text("Active: \(category.categoryData.sumActive)")
-                            .font(Font(smallFont as CTFont))
-                            .foregroundColor(.black)
-                    }
-                    BarMark(
-                        x: .value("Sum", category.categoryData.sumDone),
-                        y: .value("Name", category.category)
-                    )
-                    .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(1.00)))
-                    .position(by: .value("Status", "Done"))
-                    .annotation(position: .trailing, alignment: .center) {
-                        Text("Done: \(category.categoryData.sumDone)")
-                            .font(Font(smallFont as CTFont))
-                            .foregroundColor(.black)
-                    }
-                }
-                .chartXAxis { }
-                .chartYAxis {
-                    AxisMarks {
-                        let value = $0.as(String.self)!
-                        AxisValueLabel {
-                            Text("\(value)")
-                                .font(Font(regularFont as CTFont))
-                                .foregroundStyle(.black)
+        ScrollView {
+            VStack {
+                if #available(iOS 16.0, *) {
+                    Text("Number Of Tasks")
+                        .font(Font(regularFont as CTFont))
+                        .foregroundColor(.black)
+                        .underline()
+                    let dataArray = categoriesAnalytics.categoriesAnalyticsArray
+                    let defaultHeight = 100
+                    Chart(dataArray, id: \.category) { category in
+                        BarMark(
+                            x: .value("Sum", category.categoryData.sumActive),
+                            y: .value("Name", category.category)
+                        )
+                        .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(0.50)))
+                        .position(by: .value("Status", "Active"))
+                        .annotation(position: .trailing, alignment: .center) {
+                            Text("Active = \(category.categoryData.sumActive)")
+                                .font(Font(smallFont as CTFont))
+                                .foregroundColor(.black)
+                        }
+                        BarMark(
+                            x: .value("Sum", category.categoryData.sumDone),
+                            y: .value("Name", category.category)
+                        )
+                        .foregroundStyle(Color(category.categoryData.uiColor.withAlphaComponent(1.00)))
+                        .position(by: .value("Status", "Done"))
+                        .annotation(position: .trailing, alignment: .center) {
+                            Text("Done = \(category.categoryData.sumDone)")
+                                .font(Font(smallFont as CTFont))
+                                .foregroundColor(.black)
                         }
                     }
+                    .frame(height: CGFloat(dataArray.count * defaultHeight))
+                    .chartXAxis { }
+                    .chartYAxis {
+                        AxisMarks {
+                            let value = $0.as(String.self)!
+                            AxisValueLabel {
+                                Text("\(value):")
+                                    .font(Font(regularFont as CTFont))
+                                    .foregroundStyle(.black)
+                            }
+                        }
+                    }
+                } else {
+                    Text("Please upgrade to iOS 16.0 or higher.")
+                        .font(Font(smallFont as CTFont))
+                        .multilineTextAlignment(.center)
                 }
-            } else {
-                Text("Please upgrade to iOS 16.0 or higher.")
-                    .font(Font(smallFont as CTFont))
-                    .multilineTextAlignment(.center)
             }
+            .padding(.all, 24.0)
         }
-        .padding(.all, 24.0)
     }
     
 }
