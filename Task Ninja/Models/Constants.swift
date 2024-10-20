@@ -21,5 +21,9 @@ struct K {
     static let backgroundColor: UIColor = UIColor.systemBlue
     static let tintColor: UIColor = UIColor.white
     static let minScaleFactor: CGFloat = 0.75
+    static let numberCharPerLine: Int = 20
+    static let cellHeightPctIncreasePerLine: CGFloat = 0.30
+    static let numberCharPerLineBarChartTitlePctIncrease: CGFloat = 0.70
+    static let barChartHeightPctIncrease: CGFloat = 2.00
     
 }

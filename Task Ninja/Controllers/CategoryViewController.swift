@@ -29,12 +29,25 @@ class CategoryViewController: BaseTableViewController {
         dataManager.deleteDatabaseEntityCategory(index: indexPath.row)
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let safeCategoryArray = dataManager.categoryArray {
+            let name = safeCategoryArray[indexPath.row].name
+            let cellHeightMultiple = name!.count / K.numberCharPerLine
+            return (CGFloat(cellHeightMultiple) * K.cellHeightPctIncreasePerLine * K.cellHeight + K.cellHeight)
+        } else {
+            return K.cellHeight
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let safeCategoryArray = dataManager.categoryArray {
             cell.backgroundColor = UIColor(safeCategoryArray[indexPath.row].cellBackgroundColorHexString!)
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
-            cell.textLabel?.text = safeCategoryArray[indexPath.row].name
+            let name = safeCategoryArray[indexPath.row].name
+            cell.textLabel?.text = name
+            let cellHeightMultiple = name!.count / K.numberCharPerLine
+            cell.textLabel?.numberOfLines = cellHeightMultiple + 1
             cell.detailTextLabel?.text = nil
             cell.accessoryView = UIImageView(image: UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: K.regularSize)))
             cell.tintColor = cell.backgroundColor!.isLight ? .black : .white

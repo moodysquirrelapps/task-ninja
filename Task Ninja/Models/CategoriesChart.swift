@@ -97,18 +97,21 @@ struct CategoriesChart: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        .frame(height: CGFloat(2 * dataArraySize) * defaultHeight)
+                        .frame(height: K.barChartHeightPctIncrease * CGFloat(dataArraySize) * defaultHeight)
                         .chartXAxis { }
                         .chartXScale(domain: 0...dataArrayMaxRange)
                         .chartYAxis {
                             AxisMarks {
                                 let value = $0.as(String.self)!
-                                let valueAdjusted = (value.count >= 12) ? String(value.prefix(12) + "...") : value
+                                let numberCharPerLineAdjusted = Int(K.numberCharPerLineBarChartTitlePctIncrease * CGFloat(K.numberCharPerLine))
+                                let valueAdjusted = (value.count > numberCharPerLineAdjusted) ?
+                                (value.prefix(numberCharPerLineAdjusted) + "...") :
+                                value
                                 AxisValueLabel {
                                     Text("\(valueAdjusted)")
                                         .font(Font(K.regularFont as CTFont))
                                         .foregroundStyle(.black)
-                                        .underline()
+                                        .italic()
                                 }
                             }
                         }

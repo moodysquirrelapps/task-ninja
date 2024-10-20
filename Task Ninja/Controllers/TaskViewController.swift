@@ -41,13 +41,26 @@ class TaskViewController: BaseTableViewController {
         tableView.reloadData()
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let safeTaskArray = dataManager.taskArray {
+            let name = safeTaskArray[indexPath.row].name
+            let cellHeightMultiple = name!.count / K.numberCharPerLine
+            return (CGFloat(cellHeightMultiple) * K.cellHeightPctIncreasePerLine * K.cellHeight + K.cellHeight)
+        } else {
+            return K.cellHeight
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let safeTaskArray = dataManager.taskArray, let categorySelected = dataManager.categorySelected {
             let newAlpha = (K.minAlpha +  CGFloat(indexPath.row + 1) * (K.maxAlpha - K.minAlpha) / CGFloat(safeTaskArray.count))
             cell.backgroundColor = UIColor(categorySelected.cellBackgroundColorHexString!).withAlphaComponent(newAlpha)
             cell.textLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
-            cell.textLabel?.text = safeTaskArray[indexPath.row].name
+            let name = safeTaskArray[indexPath.row].name
+            cell.textLabel?.text = name
+            let cellHeightMultiple = name!.count / K.numberCharPerLine
+            cell.textLabel?.numberOfLines = cellHeightMultiple + 1
             cell.detailTextLabel?.textColor = cell.backgroundColor!.isLight ? .black : .white
             cell.detailTextLabel?.text =  "Created: " + dataManager.dateToString(safeTaskArray[indexPath.row].creationDate!)
             cell.detailTextLabel?.text = safeTaskArray[indexPath.row].isDone ?
