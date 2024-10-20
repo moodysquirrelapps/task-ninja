@@ -12,7 +12,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
     
     var backgroundColor = K.backgroundColor
     var tintColor = K.tintColor
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = K.cellHeight
@@ -111,7 +111,7 @@ class BaseTableViewController: UITableViewController, SwipeTableViewCellDelegate
         messageLabel.sizeToFit()
         tableView.backgroundView = messageLabel
     }
-
+    
     func restore() {
         tableView.backgroundView = nil
     }

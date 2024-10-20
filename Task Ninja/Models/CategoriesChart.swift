@@ -102,13 +102,13 @@ struct CategoriesChart: View {
                         .chartXScale(domain: 0...dataArrayMaxRange)
                         .chartYAxis {
                             AxisMarks {
-                                let value = $0.as(String.self)!
+                                let name = $0.as(String.self)!
                                 let numberCharPerLineAdjusted = Int(K.numberCharPerLineBarChartTitlePctIncrease * CGFloat(K.numberCharPerLine))
-                                let valueAdjusted = (value.count > numberCharPerLineAdjusted) ?
-                                (value.prefix(numberCharPerLineAdjusted) + "...") :
-                                value
+                                let nameAdjusted = (name.count > numberCharPerLineAdjusted) ?
+                                (name.prefix(numberCharPerLineAdjusted) + "...") :
+                                name
                                 AxisValueLabel {
-                                    Text("\(valueAdjusted)")
+                                    Text("\(nameAdjusted)")
                                         .font(Font(K.regularFont as CTFont))
                                         .foregroundStyle(.black)
                                         .italic()
