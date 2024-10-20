@@ -3,7 +3,26 @@ An iOS mobile application for managing todo lists and providing completion analy
 
 # Implementation
 
-Add later...
+<img src="/Screenshots/system-design.png" style="width: 100%">
+
+Please refer to the system diagram above.
+
+For User Interface:
+1. Launch Screen: A launch screen with an image of the application icon, title and author.
+2. Home Screen: A table view controller where the user can add categories, proceed to Tasks Screen or proceed to Analytics Screen.
+3. Tasks Screen: A table view controller where the user can add tasks, mark a task as active or done, search partially for a task or return to Home Screen.
+4. Analytics Screen: A SwiftUI scroll view with bar charts for each category showing the count of active and done tasks; user can reutn to Home Screen.
+
+For Core Data Model:
+1. Category Entity:
+   * name: Name of category
+   * cellBackgroundColorHexString: Stores the random-generated background color of the table view cell in Hex format.
+3. Task Entity:
+   * name: Name of task
+   * categoryName: Name of category associated with the task
+   * creationDate: Creation date of the task
+   * isDone: True for "Done" or False for "Active"
+   * completionDate: Completion date of the task when the user marks as done; if user marks as done multiple times, the latest value is kept.
 
 # Conclusion
 
