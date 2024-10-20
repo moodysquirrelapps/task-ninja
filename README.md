@@ -1,5 +1,5 @@
 # Purpose
-An iOS mobile application for managing todos and providing completion metrics.
+An iOS mobile application for managing todo lists and providing completion analytics.
 
 # Implementation
 
