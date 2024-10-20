@@ -97,14 +97,14 @@ extension TaskViewController {
         let addAction = UIAlertAction(title: "Add Task", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                if self.dataManager.createDatabaseEntityTask(name: safeText.capitalized) {
+                if self.dataManager.createDatabaseEntityTask(name: safeText) {
                     self.dataManager.readDatabaseEntityTask(withSearch: self.searchBarText, withControl: self.segmentedControlValue)
                     self.tableView.reloadData()
                 } else {
                     self.invalidResponseAddPressed(message: "Task already exists.")
                 }
             } else {
-                self.invalidResponseAddPressed(message: "Response is empty.")
+                self.invalidResponseAddPressed(message: "Task is empty.")
             }
             self.tableView.reloadData()
         }
@@ -132,7 +132,7 @@ extension TaskViewController {
                     self.invalidResponseAddPressed(message: "Task already exists.")
                 }
             } else {
-                self.invalidResponseAddPressed(message: "Response is empty.")
+                self.invalidResponseAddPressed(message: "Task is empty.")
             }
             self.tableView.reloadData()
         }

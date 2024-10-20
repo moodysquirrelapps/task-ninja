@@ -33,11 +33,12 @@ class DataManager {
         return dateFormatter.string(from: date)
     }
     
-    private func transformText(_ text: String) -> String {
-        let newText = text.trimmingCharacters(in: .whitespaces)
-        return (newText.count > 1) ?
-        (newText.prefix(1).uppercased() + newText.lowercased().dropFirst()) :
-        newText.prefix(1).uppercased()
+    private func transformCategoryName(_ text: String) -> String {
+        return text.uppercased().trimmingCharacters(in: .whitespaces)
+    }
+    
+    private func transformTaskName(_ text: String) -> String {
+        return text.trimmingCharacters(in: .whitespaces)
     }
     
 }
@@ -48,7 +49,7 @@ extension DataManager {
     
     func createDatabaseEntityCategory(name: String) -> Bool {
         // Unique Name Constraint
-        let nameTransformed = transformText(name)
+        let nameTransformed = transformCategoryName(name)
         if let safeCategoryArray = categoryArray {
             for category in safeCategoryArray {
                 if (category.name == nameTransformed) { return false }
@@ -79,7 +80,7 @@ extension DataManager {
     
     func updateDatabaseEntityCategory(index: Int, newName: String) -> Bool {
         // Unique Name Constraint
-        let newNameTransformed = transformText(newName)
+        let newNameTransformed = transformCategoryName(newName)
         if let safeCategoryArray = categoryArray {
             for category in safeCategoryArray {
                 if (category.name == newNameTransformed) { return false }
@@ -108,7 +109,7 @@ extension DataManager {
     
     func createDatabaseEntityTask(name: String) -> Bool {
         // Create New Task
-        let nameTransformed = transformText(name)
+        let nameTransformed = transformTaskName(name)
         let newTask = Task(context: self.context)
         newTask.categoryName = categorySelected!.name
         newTask.name = nameTransformed
@@ -152,7 +153,7 @@ extension DataManager {
             taskArray![index].isDone = !(taskArray![index].isDone)
             taskArray![index].completionDate = (taskArray![index].completionDate == nil) ? Date() : nil
         } else { // Edit Current Name
-            let newNameTransformed = transformText(newName)
+            let newNameTransformed = transformTaskName(newName)
             taskArray![index].name = newNameTransformed
         }
         // Save Changes

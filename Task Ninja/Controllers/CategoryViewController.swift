@@ -72,14 +72,14 @@ extension CategoryViewController {
         let addAction = UIAlertAction(title: "Add Category", style: .default) { action in
             guard let safeText = inputTextField.text else { return }
             if safeText != "" {
-                if self.dataManager.createDatabaseEntityCategory(name: safeText.capitalized) {
+                if self.dataManager.createDatabaseEntityCategory(name: safeText) {
                     self.dataManager.readDatabaseEntityCategory()
                     self.tableView.reloadData()
                 } else {
                     self.invalidResponseAddPressed(message: "Category already exists.")
                 }
             } else {
-                self.invalidResponseAddPressed(message: "Response is empty.")
+                self.invalidResponseAddPressed(message: "Category is empty.")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }
@@ -106,7 +106,7 @@ extension CategoryViewController {
                     self.invalidResponseAddPressed(message: "Category already exists.")
                 }
             } else {
-                self.invalidResponseAddPressed(message: "Response is empty.")
+                self.invalidResponseAddPressed(message: "Category is empty.")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in return }

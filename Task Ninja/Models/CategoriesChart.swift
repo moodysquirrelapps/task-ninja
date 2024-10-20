@@ -67,6 +67,7 @@ struct CategoriesChart: View {
     var body: some View {
         if #available(iOS 16.0, *) {
             let dataArray = categoriesAnalytics.categoriesAnalyticsArray
+            let dataArrayMaxRange = categoriesAnalytics.categoriesAnalyticsMaxSum + 1
             let dataArraySize = dataArray.count
             if dataArraySize > 0 {
                 ScrollView {
@@ -96,22 +97,24 @@ struct CategoriesChart: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        .frame(height: CGFloat(dataArraySize) * defaultHeight)
+                        .frame(height: CGFloat(2 * dataArraySize) * defaultHeight)
                         .chartXAxis { }
+                        .chartXScale(domain: 0...dataArrayMaxRange)
                         .chartYAxis {
                             AxisMarks {
                                 let value = $0.as(String.self)!
-                                let valueAdjusted = (value.count > 18) ? String(value.prefix(18) + "...") : value
+                                let valueAdjusted = (value.count >= 12) ? String(value.prefix(12) + "...") : value
                                 AxisValueLabel {
-                                    Text("\(valueAdjusted):")
+                                    Text("\(valueAdjusted)")
                                         .font(Font(K.regularFont as CTFont))
                                         .foregroundStyle(.black)
+                                        .underline()
                                 }
                             }
                         }
                     }
-                    .padding(.all, K.regularSize)
                 }
+                .padding(.all, K.regularSize)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.white)
             } else {
