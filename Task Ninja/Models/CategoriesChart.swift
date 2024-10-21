@@ -24,9 +24,14 @@ struct CategoriesAnalytics {
     var categoriesAnalyticsArray: [(category: String, categoryData: CategoryData, categorySumMax: Int)] = []
     var categoriesAnalyticsMaxSum: Int {
         if categoriesAnalyticsArray.count > 0 {
-            let max1 = categoriesAnalyticsArray[0].categorySumMax
-            let max2 = categoriesAnalyticsArray[1].categorySumMax
-            return (max1 > max2) ? max1 : max2
+            if categoriesAnalyticsArray.count == 1 {
+                let max1 = categoriesAnalyticsArray[0].categorySumMax
+                return max1
+            } else {
+                let max1 = categoriesAnalyticsArray[0].categorySumMax
+                let max2 = categoriesAnalyticsArray[1].categorySumMax
+                return (max1 > max2) ? max1 : max2
+            }
         } else {
             return 0
         }
